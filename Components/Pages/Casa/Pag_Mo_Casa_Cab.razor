@@ -1,0 +1,34 @@
+﻿@page "/casa/Pag_Mo_Casa_Cab"
+@using ProyectoCasa.Components.General
+@using ProyectoCasa.Model.Casa
+@rendermode InteractiveServer
+
+<Menu></Menu>
+<div class="container">
+    <h3 class="text-center">Casa </h3>
+    <hr />
+
+    <button class="btn btn-primary" @onclick="IrANuevaCasa">Añadir casa</button>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id🏴</th>
+                <th scope="col">Descripción 📋</th>
+                <th scope="col">Saldo 💲</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (Mo_Casa casa in LstCabecera)
+            {
+                <tr @onclick="() => EditarCasa(casa.Id)">
+                    <th scope="row">@casa.Id</th>
+                    <td>@casa.Descripcion📋</td>
+                    <td>@casa.Saldo💲</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

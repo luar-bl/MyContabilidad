@@ -1,0 +1,121 @@
+﻿@page "/factura/Mo_Factura_Det"
+@page "/factura/Mo_Factura_Det{_Id:long}"
+@using ProyectoCasa.Components.General
+@using ProyectoCasa.Components.Modal
+@using ProyectoCasa.Model.Factura
+
+@rendermode InteractiveServer
+
+<Menu></Menu>
+<div class="container d-flex justify-content-between">
+    <button type="button" @onclick="NuevaFactura" class="btn btn-dark ms-auto">!Nueva Factura!</button>
+    <button type="button" @onclick="GuardarFactura" class="btn btn-success">!Guardar Factura!</button>
+</div>
+<div class="container">
+    <br />
+
+    @if (esEdicion)
+    {
+        <h4 class="text-center">Editando factura @_Id 📝 </h4>
+    }
+    else
+    {
+        <h4 class="text-center">Nueva factura 📝</h4>
+    }
+
+    <hr />
+        <main>
+            <!-- CABECERA DE LA PÁGINA -->
+                <div class="header-section">
+                    <div class="class=" mb-3">
+                        <label for="Descripcion" class="form-label">Descripción </label>
+                        <input @bind-value="_facturaCab.Descripcion" class="form-control" />
+                    </div>
+                    <div class="class=" mb-3">
+                        <label for="Fecha" class="form-label">Fecha 📅</label>
+                        <input type="date" @bind-value="_facturaCab.Fecha" class="form-control" />
+
+                        <label for="TotalGastado" class="form-label">Total gastado: 💲</label>
+                        <input type="number" @bind-value="_facturaCab.TotalGastado" class="form-control" readonly />
+                    </div>
+                    <div class="mb-10">
+                        <label for="Casa" class="form-label">Casa 🏠</label>
+                        <select @bind="_facturaCab.CasaId" class="form-select" aria-label="Seleccione la casa">
+                        <option value="0">-- Seleccione una casa --</option>
+                        @foreach (var casa in MostrarDatosCasas())
+                            {
+                                <option  value="@casa.Id">@casa.Id - @casa.Descripcion</option>
+                            }
+                        </select>
+
+                        <label for="TipoFactura" class="form-label">Tipo Factura </label>
+                        <select @bind="_facturaCab.TipoFactura" class="form-select" aria-label="Seleccione un tipo de factura">
+                            <option value="0">-- Seleccione una tipo --</option>
+                            @foreach (var tipoFac in Enum.GetValues<TipoFactura>().ToList())
+                            {
+                                <option value="@tipoFac">@Enum.GetName(tipoFac)</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <hr />
+
+                <!-- DETALLE DE LA PÁGINA -->
+                <div class="detail-input-section" style="background-color: #f9f9f9;">
+                    <h5>Añadir Producto 🛒</h5>
+                    <div class="mb-3">
+                    <input @ref="inputProducto" class="form-control" id="inputProducto" @bind-value="_det.Producto" placeholder="Producto" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Cantidad" class="form-label">Cantidad:
+                            <input class="form-control" type="number" @bind-value="_det.Cantidad" placeholder="Cantidad" required />
+                        </label>
+                        <label for="Precio" class="form-label">Precio:
+                            <input class="form-control" type="number" @bind-value="_det.Precio" placeholder="Precio" required />
+                        </label>
+                        <button @onclick="AgregarDetalle" id="botonAgregarDetalle" class="btn btn-primary">Añadir productos</button>
+                    </div>
+                </div>
+
+
+            @if (_facturaCab == null)
+            {
+                return;
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id 🏴󠁳󠁹󠁩󠁤󠁿</th>
+                            <th scope="col">Producto 📦</th>
+                            <th scope="col">Cantidad 🤏</th>
+                            <th scope="col">Precio💲</th>
+                            <th scope="col">Total💲 x Producto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if (MostrarDetalle() == null)
+                        {
+                            return;
+                        }
+                        @foreach (Mo_Factura_Det detFact in MostrarDetalle())
+                        {
+                            <tr @onclick="() => Editar(detFact)">
+                                <th scope="row">@detFact.Id</th>
+                                <td>@detFact.Producto</td>
+                                <td>@detFact.Cantidad</td>
+                                <td>@detFact.Precio</td>
+                                <td>@detFact.Total</td>
+                            <button class="btn btn-danger" @onclick="() => Eliminar(detFact)" @onclick:stopPropagation="true">Eliminar</button>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+           
+
+            <Modal_Edicion_Detalle Visible="_Visible" DetalleFactura="_DetalleFactura" ValorAntiguo="_ValorAntiguo" OnClose ="CerrarModal"></Modal_Edicion_Detalle>
+        </main>
+</div>

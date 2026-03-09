@@ -1,0 +1,36 @@
+﻿@page "/factura/Mo_Factura_Cab"
+@using ProyectoCasa.Components.General
+@using ProyectoCasa.Model.Factura
+@rendermode InteractiveServer
+
+<Menu></Menu>
+
+<div class="container">
+    <button class="btn btn-primary" @onclick="IrANuevaFactura">¡Nueva Factura!</button>
+    @* <h4>Saldo disponible: @Saldo</h4> *@
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id 🏴</th>
+                <th>Descripcion</th>
+                <th>Fecha 📅</th>
+                <th>Casa 🏠</th> 
+                <th>Tipo Factura</th>
+                <th>Gastado 💲</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Mo_Factura_Cab cab in LstFacturasCab)
+            {
+                <tr @onclick="() => EditarFactura(cab.Id)">
+                    <th scope="row">@cab.Id</th>
+                    <td>@cab.Descripcion</td>
+                    <td>@cab.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@cab.CasaId</td> 
+                    <td>@cab.TipoFactura</td>
+                    <td>@cab.TotalGastado</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
