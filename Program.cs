@@ -1,4 +1,5 @@
 using ProyectoCasa.Components;
+using ProyectoCasa.Service;
 using Supabase;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,8 @@ var options = new SupabaseOptions
     AutoRefreshToken = true,
     AutoConnectRealtime = true
 };
+
+builder.Services.AddScoped<ServicioBlanco>();
 
 // Registrar Supabase Client
 builder.Services.AddSingleton<Supabase.Client>(sp =>

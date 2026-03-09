@@ -58,7 +58,7 @@ h1:focus {
 }
 
 table {
-    table-layout: fixed; /* 🔒 El candado mágico */
+    table-layout: fixed;
     width: 100%;
 }
 

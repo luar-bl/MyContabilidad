@@ -1,0 +1,27 @@
+﻿@page "/login"
+@page "/login/{errorMessage}"
+@rendermode InteractiveServer
+
+<PageTitle>Login</PageTitle>
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<div class="container mx-auto text-center">
+   @*  <EditForm Model="@loginModel" FormName="MyUniqueFormName" OnValidSubmit="() => servicioBlanco.HandleLogin(loginModel, errorMessage)">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div>
+            <label>Email:</label>
+            <InputText @bind-Value="loginModel.Usuario" />
+        </div>
+        <div>
+            <label>Password:</label>
+            <InputText @bind-Value="loginModel.Password" type="password" />
+        </div>
+        <button type="submit">Entrar</button>
+    </EditForm> *@
+ 
+</div>
