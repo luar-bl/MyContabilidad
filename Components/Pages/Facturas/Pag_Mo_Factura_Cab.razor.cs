@@ -24,7 +24,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
 
         private void EditarFactura(long id)
         {
-            Navigation.NavigateTo($"/factura/Mo_Factura_Det{id}");
+            Navigation.NavigateTo($"/factura/Mo_Factura_Det/{id}");
         }
 
         private void IrANuevaFactura()

@@ -1,8 +1,9 @@
 ﻿@page "/factura/Mo_Factura_Cab"
+@using Microsoft.AspNetCore.Authorization
 @using ProyectoCasa.Components.General
 @using ProyectoCasa.Model.Factura
 @rendermode InteractiveServer
-
+@attribute [Authorize]
 <Menu></Menu>
 
 <div class="container">

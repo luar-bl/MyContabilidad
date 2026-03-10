@@ -1,25 +1,50 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using ProyectoCasa.Model.Sesion;
+using System.Security.Claims;
+
 
 namespace ProyectoCasa.Service
 {
     public class ServicioBlanco
     {
-        public ServicioBlanco() { }
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILocalStorageService _localStorage;
+        private readonly Supabase.Client _supabaseClient;
 
-        public async Task HandleLogin(Mo_Sesion loginModel, string errorMessage, NavigationManager Navigation, Supabase.Client SupabaseClient)
+        public ServicioBlanco(Supabase.Client supabaseClient, ILocalStorageService localStorage)
         {
-            // Lógica de autenticación aquí
-            // Si es correcto, redirigir:
+            _supabaseClient = supabaseClient;
+            _localStorage = localStorage;
+        }
 
-            var session = await SupabaseClient.Auth.SignUp(loginModel.Usuario, loginModel.Password);
-            if (session == null)
+        public async Task<string> HandleLogin(Mo_Sesion login, AuthenticationStateProvider authProvider)
+        {
+            try
             {
-                errorMessage = "Error al iniciar session";
-                Navigation.NavigateTo("/");
+                var response = await _supabaseClient.Auth.SignIn(login.Usuario, login.Password);
+
+                if (response?.User == null)
+                    return "Usuario o contraseña incorrectos";
+
+                // Guardamos la sesión en LocalStorage
+                await _localStorage.SetItemAsync("supabase_session", response);
+
+                // Notificamos a Blazor que el estado de autenticación cambió
+                if (authProvider is SupabaseAuthStateProvider custom)
+                {
+                    custom.NotifyAuthStateChanged();
+                }
             }
-            Navigation.NavigateTo("/casa/Pag_Mo_Casa_Cab");
+            catch (Exception ex)
+            {
+                return "Usuario o contraseña incorrectos";
+            }
+
+            return string.Empty;
         }
     }
 }

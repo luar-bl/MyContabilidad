@@ -1,27 +1,30 @@
 ﻿@page "/login"
-@page "/login/{errorMessage}"
+@using Microsoft.AspNetCore.Components.Authorization
 @rendermode InteractiveServer
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime JSRuntime
+
 
 <PageTitle>Login</PageTitle>
-@if (!string.IsNullOrEmpty(errorMessage))
-{
-    <div class="alert alert-danger">@errorMessage</div>
-}
 
-<div class="container mx-auto text-center">
-   @*  <EditForm Model="@loginModel" FormName="MyUniqueFormName" OnValidSubmit="() => servicioBlanco.HandleLogin(loginModel, errorMessage)">
+<div class="container mx-auto text-center mt-5">
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    @* Llamamos a OnSubmit que es el método de tu C# *@
+    <EditForm Model="@loginModel" OnValidSubmit="OnSubmit">
         <DataAnnotationsValidator />
-        <ValidationSummary />
 
-        <div>
-            <label>Email:</label>
-            <InputText @bind-Value="loginModel.Usuario" />
+        <div class="mb-3">
+            <label class="form-label">Email:</label>
+            <InputText @bind-Value="loginModel.Usuario" class="form-control" />
         </div>
-        <div>
-            <label>Password:</label>
-            <InputText @bind-Value="loginModel.Password" type="password" />
+        <div class="mb-3">
+            <label class="form-label">Password:</label>
+            <InputText @bind-Value="loginModel.Password" type="password" class="form-control" />
         </div>
-        <button type="submit">Entrar</button>
-    </EditForm> *@
- 
+        <button type="submit" class="btn btn-primary">Entrar 🚀</button>
+    </EditForm>
 </div>
