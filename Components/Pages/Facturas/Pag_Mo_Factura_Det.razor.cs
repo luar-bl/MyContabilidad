@@ -7,6 +7,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
 {
     public partial class Pag_Mo_Factura_Det
     {
+        string errorMensaje { get; set; } = string.Empty;
 
         #region "Eventos de la página"
         protected override async Task OnInitializedAsync()
@@ -16,6 +17,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
             //return base.OnInitializedAsync();
         }
         #endregion
+
 
 
         #region "Propiedades de la página"
@@ -55,9 +57,9 @@ namespace ProyectoCasa.Components.Pages.Facturas
         {
             try
             {
-                if (SupabaseClient == null) { return; }
+                if (SupabaseClient == null) { errorMensaje = "¡Error de conexión!"; return; }
 
-                if (_det == null || _det != null && string.IsNullOrWhiteSpace(_det.Producto)) { return; }
+                if (_det == null || _det != null && string.IsNullOrWhiteSpace(_det.Producto)) { errorMensaje = "¡Datos vacios!"; return; }
 
                 await GuardarFactura();
 
@@ -68,14 +70,20 @@ namespace ProyectoCasa.Components.Pages.Facturas
 
                 _facturaCab.TotalGastado = _facturaCab.LstFactDet.Sum(x => x.Total);
 
-                //INSERTAR DETALLE
-                await SupabaseClient.From<Mo_Factura_Det>().Insert(_det);
+                //INSERTAR DETALLE Y OBTENER SU ID POR SI HAY QUE ELIMINAR.
+                var res = await SupabaseClient.From<Mo_Factura_Det>().Insert(_det);
+                var idDetalle = res.Models.FirstOrDefault();
+
+                if (idDetalle != null)
+                {
+                    _det.Id = idDetalle.Id;
+                }
 
                 //UPDATE SALDO CASA
                 var casa = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == _facturaCab.CasaId).Single();
                 if (casa != null)
                 {
-                    casa.Saldo -= _facturaCab.TotalGastado;
+                    casa.Saldo -= _det.Total;
 
                     await SupabaseClient.From<Mo_Casa>().Update(casa);
                 }
@@ -83,9 +91,11 @@ namespace ProyectoCasa.Components.Pages.Facturas
                 //UPDATE FACTURA CAB
                 await GuardarFactura();
 
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                errorMensaje = ex.Message;
                 throw;
             }
 
@@ -163,6 +173,9 @@ namespace ProyectoCasa.Components.Pages.Facturas
         private async Task NuevaFactura()
         {
             await GuardarFactura(); //GUARDAMOS LA FACTURA EN CASO DE QUE HAYA ESCRITO Y/O MODIFICADO ALGO.
+            _facturaCab = new Mo_Factura_Cab();
+            _det = new Mo_Factura_Det();
+            _Id = null;
             Navigation.NavigateTo("/factura/Mo_Factura_Det"); //REDIRIGE A LA NUEVA PÁGINA DE FACTURA
         }
 
@@ -204,7 +217,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
         //ESTE MÉTODO ELIMINA EL DETALLE Y DEVUELVE EL SALDO A LA CASA QUE PERTENECE.
         private async Task Eliminar(Mo_Factura_Det detFact)
         {
-            if (detFact == null || detFact?.Id <= 0) { return; }
+            if (detFact == null || detFact?.Id <= 0) { errorMensaje = "!No se ha podido eliminar el detalle!"; return; }
 
             try
             {

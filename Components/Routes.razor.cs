@@ -9,13 +9,13 @@ namespace ProyectoCasa.Components
     {
         private bool sessionLoaded = false;
 
-        [Inject] SupabaseAuthStateProvider test { get; set; }
+        [Inject] SupabaseAuthStateProvider _supabaseAuthState { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
 
             // Esperar a que SupabaseAuthStateProvider cargue sesión
-            var authState = await test.GetAuthenticationStateAsync();
+            var authState = await _supabaseAuthState.GetAuthenticationStateAsync();
             // sessionLoaded = true;
             var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
             var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
