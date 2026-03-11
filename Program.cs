@@ -26,7 +26,7 @@ builder.Services.AddCascadingAuthenticationState();
 // 2. Configuración de Supabase (Primero las opciones)
 var supabaseOptions = new SupabaseOptions
 {
-    AutoRefreshToken = true,
+    AutoRefreshToken = false,
     AutoConnectRealtime = true,
     // Nota: Si tu versión no tiene PersistSession, lo gestionaremos con el Provider
 };

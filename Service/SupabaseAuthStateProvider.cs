@@ -30,7 +30,8 @@ namespace ProyectoCasa.Service
             // 3. Si encontramos sesión en LocalStorage, la restauramos en Supabase
             if (session != null && _supabaseClient.Auth.CurrentSession == null)
             {
-                _supabaseClient.Auth.SetSession(session.AccessToken, session.RefreshToken);
+                //_supabaseClient.Auth.SetSession(session.AccessToken, session.RefreshToken);
+                _supabaseClient.Auth.SetSession(session.AccessToken, null);
             }
 
             // 4. Si sigue sin haber usuario → no autenticado
