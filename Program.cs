@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using MudBlazor.Services;
 using ProyectoCasa.Components;
 using ProyectoCasa.Service;
 using Supabase;
@@ -14,7 +15,11 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddBlazorBootstrap();
 
-// Configurar Supabase
+//SERVICIO DE MUDBLAZOR
+builder.Services.AddMudServices();
+
+#region "-- Eventos SUPABASE -- "
+// Configurar Supabase OBTENER BBDD
 var supabaseUrl = builder.Configuration["Supabase:Url"];
 var supabaseKey = builder.Configuration["Supabase:Key"];
 
@@ -55,11 +60,10 @@ builder.Services.AddAuthentication("SupabaseAuth")
 
 builder.Services.AddAuthorization();
 
-
 // 6. Componentes de UI
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
+#endregion
 
 var app = builder.Build();
 
@@ -77,8 +81,8 @@ app.MapStaticAssets();
 
 app.UseAntiforgery();
 
-app.UseAuthentication(); // 🔑 ¿Quién eres?
-app.UseAuthorization();  // 🚫 ¿Tienes permiso?
+app.UseAuthentication(); // ¿Quién eres?
+app.UseAuthorization();  // ¿Tienes permiso?
 
 
 app.MapRazorComponents<App>()
