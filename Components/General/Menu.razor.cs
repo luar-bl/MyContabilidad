@@ -2,7 +2,6 @@
 {
     public partial class Menu
     {
-
         private void NavegarAListadoCasas()
         {
             Navigation.NavigateTo("/casa/Pag_Mo_Casa_Cab");

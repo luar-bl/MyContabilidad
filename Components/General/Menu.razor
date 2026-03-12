@@ -1,4 +1,4 @@
-﻿<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: cadetblue;">
+﻿@* <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: cadetblue;">
     <div class="container-fluid">
         <h1 class="navbar-brand">ByBlanco</h1>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,4 +15,40 @@
             </ul>
         </div>
     </div>
-</nav>
+</nav> *@
+
+<MudAppBar Color="Color.Dark" Style="height: 50px;">
+    <!-- Botón hamburguesa solo en móvil -->
+    <!-- ESTE ELEMENTO DESAPARECE CUANDO LA PANTALLA TIENE UNA DIMENSION GRANDE POR ESO Md -->
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Info">
+            <MudMenuItem Icon="@Icons.Material.Filled.Home" IconColor="Color.Info" OnClick="@(() => NavegarAListadoCasas())">
+                Casas
+            </MudMenuItem>
+
+            <MudMenuItem Icon="@Icons.Material.Filled.Notes" IconColor="Color.Success" OnClick="@(() => NavegarAListadoFacturas())">
+                Facturas
+            </MudMenuItem>
+        </MudMenu>
+    </MudHidden>
+    <!-- TEXTO MENÚ IZQUIERDA-->
+    <MudText Typo="Typo.h6" Class="ml-2">
+        ByBlanco
+    </MudText>
+    <MudSpacer />
+    <!-- Menú horizontal en desktop -->
+    <!-- ESTE ELEMENTO DESAPARECE CUANDO LA PANTALLA TIENE UNA DIMENSION PEQUEÑA POR ESO SM -->
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudStack Row="true" Spacing="2">
+
+            <MudNavLink Icon="@Icons.Material.Filled.Home" 
+                        IconColor="Color.Info"
+                        OnClick="@(() => NavegarAListadoCasas())">Casas</MudNavLink>
+
+            <MudNavLink Icon="@Icons.Material.Filled.EventNote"
+                        IconColor="Color.Success"
+                        OnClick="@(() => NavegarAListadoFacturas())"> Facturas</MudNavLink>
+        </MudStack>
+    </MudHidden>
+</MudAppBar>
+

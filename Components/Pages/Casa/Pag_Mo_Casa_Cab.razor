@@ -6,7 +6,8 @@
 @attribute [Authorize]
 
 <Menu></Menu>
-<div class="container">
+
+@* <div class="container">
     <h3 class="text-center">Casa </h3>
     <hr />
 
@@ -33,4 +34,51 @@
         </tbody>
     </table>
 
-</div>
+</div> *@
+
+<MudContainer Style="margin-top: 90px;">
+    <MudGrid>
+        <MudItem xs="12" md="12">
+            <MudPaper Class="mx-auto">
+                <MudText Class="text-center" Typo="Typo.h5">Casa</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudButton 
+                Variant="Variant.Filled"
+                EndIcon="@Icons.Material.Filled.Home" 
+                Color="Color.Primary"
+                OnClick="IrANuevaCasa">Añadir Casa</MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <MudDataGrid Items="@LstCabecera"
+                 T="Mo_Casa"
+                 Hideable="true"
+                 ShowMenuIcon="true">
+        <Columns>
+            <PropertyColumn 
+                CellStyle="white-space: nowrap;"
+                HeaderStyle="white-space: nowrap;"
+                Property="c => c.Id" Title="Id🏴"></PropertyColumn>
+            <PropertyColumn 
+                CellStyle="white-space: nowrap;"
+                HeaderStyle="white-space: nowrap;"
+                Property="c => c.Descripcion" Title="Descripción 📋"></PropertyColumn>
+            <PropertyColumn 
+                CellStyle="white-space: nowrap;"
+                HeaderStyle="white-space: nowrap;"
+                Property="c => c.Saldo" Title="Saldo💲">
+                <FooterTemplate>
+                    <MudText>Total: @context.Items.Sum(x => x.Saldo).ToString()€</MudText>
+                </FooterTemplate>
+            </PropertyColumn>
+
+            <TemplateColumn>
+                <CellTemplate>
+                    <MudIconButton Icon="@Icons.Material.Filled.ModeEdit" OnClick="@(() => EditarCasa(context.Item.Id))" />
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+</MudContainer>

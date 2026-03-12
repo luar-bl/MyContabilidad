@@ -7,7 +7,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
     {
 
         //public List<Mo_Factura_Cab> LstFacturasCab = new List<Mo_Factura_Cab>();
-        public IEnumerable<Mo_Factura_Cab> LstFacturasCab = new List<Mo_Factura_Cab>();
+        public List<Mo_Factura_Cab> LstFacturasCab = new List<Mo_Factura_Cab>();
 
         public Pag_Mo_Factura_Cab() { }
 

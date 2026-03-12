@@ -6,13 +6,11 @@
 @attribute [Authorize]
 
 <Menu></Menu>
-
-<div class="container">
+@* <div class="container">
     <h3>Facturas</h3>
     <hr/>
     <button class="btn btn-primary" @onclick="IrANuevaFactura">¡Nueva Factura!</button>
-    @* <h4>Saldo disponible: @Saldo</h4> *@
-   @*  <table class="table">
+    <table class="table">
         <thead>
             <tr>
                 <th scope="col">Id 🏴</th>
@@ -36,8 +34,25 @@
                 </tr>
             }
         </tbody>
-    </table> *@
+    </table> 
+</div> *@
 
+<MudContainer Style="margin-top: 90px;">
+
+    <MudItem xs="12" md="12">
+        <MudPaper Class="mx-auto">
+            <MudText Class="text-center" Typo="Typo.h6">Facturas</MudText>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="6">
+        <!-- VARIANT: DEFINE EL ESTILO DEL BOTON-->
+        <MudButton 
+            Variant="Variant.Filled" 
+            EndIcon="@Icons.Material.Filled.Book"
+            Color="Color.Primary"
+            OnClick="@(()=> IrANuevaFactura())">¿Nueva Factura!</MudButton>
+    </MudItem>
     <MudDataGrid Items="@LstFacturasCab"
                  T="Mo_Factura_Cab"
                  Hover
@@ -51,7 +66,7 @@
             <PropertyColumn Property="x => x.Descripcion" Groupable="false" />
             <PropertyColumn Property="x => x.Fecha" Title="Fecha 📅" Groupable="true" />
             <PropertyColumn Property="x => x.CasaId" Title="Casa 🏠" />
-            <PropertyColumn Property="x => x.TotalGastado" Title="Gastado 💲" Format="C">
+            <PropertyColumn Property="x => x.TotalGastado" Title="Gastado 💲" Format="C2">
                 <FooterTemplate>
                     Total: @context.Items.Sum(x => x.TotalGastado).ToString()
                 </FooterTemplate>
@@ -63,12 +78,12 @@
                         Tipo: @context.Grouping.Key
                         <MudChip Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small"> (Total: @context.Grouping.Count()) -> Suma:(@context.Grouping.Sum(x => x.TotalGastado))</MudChip>
                     </span> *@
-                <div class="d-flex align-center">
-                    <MudIcon Icon="@Icons.Material.Filled.Business" Color="Color.Primary" Size="Size.Small" Class="mr-2" />
-                    <span style="font-weight:bold">@context.Grouping.Key</span>
-                    <MudChip Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small"> Total: (@context.Grouping.Count()) -> Suma:(@context.Grouping.Sum(x => x.TotalGastado))</MudChip>
-                </div>
-                 </GroupTemplate>
+                    <div class="d-flex align-center">
+                        <MudIcon Icon="@Icons.Material.Filled.Business" Color="Color.Primary" Size="Size.Small" Class="mr-2" />
+                        <span style="font-weight:bold">@context.Grouping.Key</span>
+                        <MudChip Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small"> Total: (@context.Grouping.Count()) -> Suma:(@context.Grouping.Sum(x => x.TotalGastado))</MudChip>
+                    </div>
+                </GroupTemplate>
             </PropertyColumn>
 
             <TemplateColumn>
@@ -78,15 +93,14 @@
             </TemplateColumn>
         </Columns>
 
-       @*  <PagerContent>
+        @*  <PagerContent>
             <MudDataGridPager T="Mo_Factura_Cab"
                               RowsPerPageString="Filas por página:"
                               InfoFormat="{first_item}-{last_item} de {all_items}"
                               PageSizeOptions="new int[] { 5,10, 25, 50 }" />
         </PagerContent> *@
     </MudDataGrid>
-   
-</div>
+</MudContainer>
 
 
 
