@@ -2,12 +2,105 @@
 @page "/factura/Mo_Factura_Det/{_Id:long}"
 @using ProyectoCasa.Components.General
 @using ProyectoCasa.Components.Modal
+@using ProyectoCasa.Model.Casa
 @using ProyectoCasa.Model.Factura
 
 @rendermode InteractiveServer
 
-<Menu></Menu>
-<div class="container d-flex justify-content-between">
+
+
+<MudLayout>
+    <Menu/>
+
+    <MudMainContent Class="pt-16 mt-4">
+        <MudContainer MaxWidth="MaxWidth.Large">
+            <MudGrid>
+
+                <MudItem xs="12" md="12">
+                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled">¡Nueva Factura!</MudButton>
+                    </MudButtonGroup>
+                </MudItem>
+
+                <MudItem sm="12" md="12">
+                @if (!string.IsNullOrWhiteSpace(errorMensaje))
+                {
+                    <MudAlert  Typo="Typo.subtitle2">@errorMensaje</MudAlert>
+                }
+
+                @if (esEdicion)
+                {
+                    <MudText Align="Align.Center" Typo="Typo.h6">Editando factura @_Id 📝</MudText>
+                }
+                else
+                {
+                    <MudText Align="Align.Center"  Typo="Typo.h6">Nueva factura 📝</MudText>
+                }
+                </MudItem>
+
+               @* -- CABECERA DE LA PÁGINA -- *@
+                <MudItem xs="12" md="5">
+                    <MudTextField @bind-Value="_facturaCab.Descripcion"
+                                  Label="Descripción 📋"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Normal"
+                                  For="@(() => _facturaCab.Descripcion)" />
+                    <MudTextField @bind-Value="_facturaCab.Fecha"
+                                  Label="Fecha 📅"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Normal"
+                                  For="@(() => _facturaCab.Fecha)" />
+                    <MudTextField @bind-Value="_facturaCab.TotalGastado"
+                                  Label="Total 💲"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Normal"
+                                  For="@(() => _facturaCab.TotalGastado)"
+                                  ReadOnly="true" />
+                </MudItem>
+                <MudItem xs="12" md="5">
+                    <MudStack Class="justify-space-between mud-width-full">
+                        <MudSelect @bind-Value="_facturaCab.CasaId" Label="¿A que casa? 🏠">
+                            @foreach (Mo_Casa casa in MostrarDatosCasas())
+                            {
+                                <MudSelectItem Value="casa.Id">@casa.Descripcion</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudStack>
+                    <MudStack Class="justify-space-between mud-width-full">
+                        <MudSelect @bind-Value="_facturaCab.TipoFactura" Label="Tipo de factura 🧾">
+                            @foreach (var tipoFact in Enum.GetValues<TipoFactura>().ToList())
+                            {
+                                <MudSelectItem Value="tipoFact">@tipoFact</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudStack>
+                    <MudItem Class="pa-mt-10">
+                        <MudButton 
+                                   Variant="Variant.Outlined" 
+                                   sColor="Color.Primary"
+                                   EndIcon="@Icons.Material.Filled.Save"
+                                   OnClick="GuardarFactura">¡Guardar Factura!</MudButton>
+                    </MudItem>
+                   
+                </MudItem>
+
+                @* -- ESTRUCTURA DE TABLA -- *@
+                <MudItem xs="12" md="12">
+                    <MudCard>
+                        <MudCardContent>
+
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </MudMainContent>
+
+
+</MudLayout>
+
+
+@* <div class="container d-flex justify-content-between">
     <button type="button" @onclick="NuevaFactura" class="btn btn-dark ms-auto">!Nueva Factura!</button>
     <button type="button" @onclick="GuardarFactura" class="btn btn-success">!Guardar Factura!</button>
 </div>
@@ -121,6 +214,7 @@
             }
            
 
-            <Modal_Edicion_Detalle Visible="_Visible" DetalleFactura="_DetalleFactura" ValorAntiguo="_ValorAntiguo" OnClose ="CerrarModal"></Modal_Edicion_Detalle>
+            <Modal_Edicion_Detalle></Modal_Edicion_Detalle>
         </main>
 </div>
+ *@

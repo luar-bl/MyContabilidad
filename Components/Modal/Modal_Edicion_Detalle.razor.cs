@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http.Metadata;
+using MudBlazor;
 using ProyectoCasa.Components.Pages.Facturas;
 using ProyectoCasa.Model.Casa;
 using ProyectoCasa.Model.Factura;
@@ -9,9 +10,14 @@ namespace ProyectoCasa.Components.Modal
     public partial class Modal_Edicion_Detalle
     {
 
+
         private async Task Cerrar()
         {
-            await OnClose.InvokeAsync();
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+            MudDialog.Close(DialogResult.Ok(true));
         }
 
         private async Task GuardarDatos()
@@ -71,9 +77,15 @@ namespace ProyectoCasa.Components.Modal
 
             DetalleCasa = null;
             DetalleFactura = null;
-
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
             await Cerrar();
         }
+
+        [CascadingParameter]
+        private IMudDialogInstance MudDialog { get; set; }
 
         [Parameter]
         public Mo_Casa_Det? DetalleCasa { get; set; }

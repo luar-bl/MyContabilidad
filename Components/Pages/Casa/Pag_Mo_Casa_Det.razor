@@ -6,10 +6,145 @@
 @using ProyectoCasa.Components.Modal
 @using ProyectoCasa.Model.Casa
 
-<Menu></Menu>
 
+<MudLayout>
+    <Menu></Menu>
+    
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="pt-10">
+            <MudGrid>
+                <MudItem xs="12" md="12">
+                    @if (esEdicion)
+                    {
+                        <MudText Align="Align.Center" Typo="Typo.h6">Editando Casa @_Id @_casa.Descripcion 🏠 - 📋</MudText>
+                    }
+                    else
+                    {
+                        <MudText Align="Align.Center" Typo="Typo.h6">Casa nueva 🏠</MudText>
+                    }
+                </MudItem>
+                <hr />
+
+                <MudItem xs="12">
+                    <MudCard Elevation="2" Class="pa-1">
+                        <MudCardContent>
+                            <MudGrid>
+                                @* Dividimos los campos en columnas para que no ocupen todo el ancho en PC *@
+                                <MudItem xs="12" sm="5">
+                                    <MudTextField @bind-Value="_casa.Descripcion"
+                                                  Label="Descripción 📋"
+                                                  Variant="Variant.Outlined"
+                                                  Margin="Margin.Normal"
+                                                  For="@(() => _casa.Descripcion)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="3">
+                                    <MudTextField @bind-Value="_casa.Saldo"
+                                                  Label="Saldo Inicial 💸"
+                                                  Variant="Variant.Outlined"
+                                                  Margin="Margin.Normal"
+                                                  Adornment="Adornment.Start"
+                                                  AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                                                  For="@(() => _casa.Saldo)"
+                                                  ReadOnly="true"/>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                        <MudCardActions Class="d-flex justify-end pa-4">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(() => GuardarCambiosCab())">Guardar Cambios</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+      
+            </MudGrid>
+        </MudContainer>
+
+        <MudContainer Class="pt-10">
+            <MudItem xs="12">
+                <MudCard Elevation="2" Class="pa-1">
+                    <MudText Typo="Typo.h6">Añadir Detalle</MudText>
+                    <MudCardContent>
+                        <MudGrid>
+                            @* Dividimos los campos en columnas para que no ocupen todo el ancho en PC *@
+                            <MudItem xs="12" sm="3">
+                                <MudTextField @bind-Value="_det.Descripcion"
+                                              Label="Descripción 📋"
+                                              Variant="Variant.Outlined"
+                                              Margin="Margin.Normal"
+                                              For="@(() => _det.Descripcion)"
+                                              AutoFocus="true"/>
+                            </MudItem>
+                            <MudItem xs="12" sm="3">
+                                <MudTextField @bind-Value="_det.Cantidad"
+                                              Label="Cantidad"
+                                              Variant="Variant.Outlined"
+                                              Margin="Margin.Normal"
+                                              Adornment="Adornment.Start"
+                                              AdornmentIcon="@Icons.Material.Filled.ProductionQuantityLimits"
+                                              For="@(() => _det.Cantidad)"/>
+                            </MudItem>
+                            <MudItem xs="12" sm="3">
+                                <MudTextField @bind-Value="_det.Fecha"
+                                              Label="Fecha"
+                                              Variant="Variant.Outlined"
+                                              Margin="Margin.Normal"
+                                              Adornment="Adornment.Start"
+                                              AdornmentIcon="@Icons.Material.Filled.DateRange"
+                                              For="@(() => _det.Fecha)" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-end pa-4">
+                        <MudButton 
+                            Variant="Variant.Filled" 
+                            Color="Color.Primary" 
+                            Class="ml-auto"
+                                   OnClick="@(() =>Agregar())">¡Añadir Detalle!</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudContainer>
+        
+    </MudMainContent>
+
+    <MudContainer Class="pt-10">
+        <MudItem xs="12" md="12">
+            <MudCard>
+                <MudDataGrid T="Mo_Casa_Det"
+                                FixedHeader
+                                Hover
+                                Groupable ="false"
+                                Hideable="false"
+                                ShowMenuIcon="true"
+                                Items="@MostrarDetalle()">
+                    <Columns>
+                        <PropertyColumn CellStyle="white-space: nowrap;"
+                                        HeaderStyle="white-space: nowrap;"
+                                        Property="c => c.Id" Title="Id🏴"></PropertyColumn>
+                        <PropertyColumn CellStyle="white-space: nowrap;"
+                                        HeaderStyle="white-space: nowrap;"
+                                        Property="c => c.Descripcion" Title="Descripcion🏴"></PropertyColumn>
+                        <PropertyColumn CellStyle="white-space: nowrap;"
+                                        HeaderStyle="white-space: nowrap;"
+                                        Property="c => c.Cantidad" Title="Cantidad🤏"></PropertyColumn>
+                        <PropertyColumn CellStyle="white-space: nowrap;"
+                                        HeaderStyle="white-space: nowrap;"
+                                        Property="c => c.Fecha" Title="Fecha📅"></PropertyColumn>
+                        <TemplateColumn>
+                            <CellTemplate>
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => Editar(context.Item))" />
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                </MudDataGrid>
+            </MudCard>
+        </MudItem>
+    </MudContainer>
+    
+</MudLayout>
+
+@*
 <div class="container">
-    <br />
+   <br />
     <h3>
         @if (esEdicion)
         {
@@ -78,4 +213,4 @@
 
     <Modal_Edicion_Detalle Visible="Visible" DetalleCasa="_DetalleSeleccionado" ValorAntiguo="_ValorAntiguo"  OnClose="CerrarModal"></Modal_Edicion_Detalle>
 
-</div>
+</div> *@

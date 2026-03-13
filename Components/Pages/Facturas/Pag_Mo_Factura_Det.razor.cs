@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
+using MudBlazor;
+using ProyectoCasa.Components.Modal;
 using ProyectoCasa.Model.Casa;
 using ProyectoCasa.Model.Factura;
 
@@ -17,8 +19,6 @@ namespace ProyectoCasa.Components.Pages.Facturas
             //return base.OnInitializedAsync();
         }
         #endregion
-
-
 
         #region "Propiedades de la página"
 
@@ -267,24 +267,42 @@ namespace ProyectoCasa.Components.Pages.Facturas
         private Mo_Factura_Det? _DetalleFactura;
         private decimal? _ValorAntiguo;
 
-        private void Editar(Mo_Factura_Det det)
+        private async Task Editar(Mo_Factura_Det det)
         {
             _DetalleFactura = det;
-            _Visible = true;
+
             _ValorAntiguo = det.Total;
-        }
-        private async Task CerrarModal()
-        {
-            _Visible = false;
 
-            var res = await SupabaseClient.From<Mo_Factura_Cab>().Where(x => x.Id == _facturaCab.Id).Single();
-            if (res != null)
+            var parameter = new DialogParameters
             {
-                _facturaCab.TotalGastado = res.TotalGastado;
+                ["DetalleFactura"] = _DetalleFactura,
+                ["ValorAntiguo"] = _ValorAntiguo
+            };
 
+            var options = new DialogOptions { CloseOnEscapeKey = true, };
+
+            var dialog = await DialogService.ShowAsync<Modal_Edicion_Detalle>("Simple Dialog", parameter, options);
+
+            var res = await dialog.Result;
+            if (!res.Canceled)
+            {
+                await CargarDatos(true);
                 StateHasChanged();
             }
         }
+
+        //private async Task CerrarModal()
+        //{
+        //    _Visible = false;
+
+        //    var res = await SupabaseClient.From<Mo_Factura_Cab>().Where(x => x.Id == _facturaCab.Id).Single();
+        //    if (res != null)
+        //    {
+        //        _facturaCab.TotalGastado = res.TotalGastado;
+
+        //        StateHasChanged();
+        //    }
+        //}
 
         #endregion
 

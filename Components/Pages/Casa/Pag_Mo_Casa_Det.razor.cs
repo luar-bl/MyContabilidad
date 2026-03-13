@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc.Razor.Internal;
+using MudBlazor;
+using ProyectoCasa.Components.Modal;
 using ProyectoCasa.Components.Pages.Facturas;
 using ProyectoCasa.Model.Casa;
 
@@ -6,7 +9,10 @@ namespace ProyectoCasa.Components.Pages.Casa
 {
     public partial class Pag_Mo_Casa_Det
     {
-      
+
+        Mo_Casa_Det? _DetalleSeleccionado;
+        decimal? _ValorAntiguo;
+
         ElementReference focusInputDescrip;
 
         private async Task Agregar()
@@ -45,8 +51,8 @@ namespace ProyectoCasa.Components.Pages.Casa
 
                 _det.CasaId = _casa.Id;
                 _casa.LstDetalle.Add(_det);
-                _det.Fecha = Convert.ToDateTime(_det.Fecha.ToString("yyyy/MM/dd"));
-                _casa.Saldo += _det.Cantidad; 
+                _det.Fecha = Convert.ToDateTime(_det.Fecha.ToString("dd/MM/yyyy"));
+                _casa.Saldo += _det.Cantidad;
 
 
                 //INSERTAR DETALLE
@@ -60,9 +66,8 @@ namespace ProyectoCasa.Components.Pages.Casa
                 throw;
             }
 
-
             _det = new Mo_Casa_Det();
-            await FocusInputDescripcion();
+            //await FocusInputDescripcion();
         }
 
         private async Task CargarDatos(bool esEdicion)
@@ -95,38 +100,77 @@ namespace ProyectoCasa.Components.Pages.Casa
             }
         }
 
+        //private async Task CerrarModal()
+        //{
+        //    Visible = false;
 
-        private void Editar(Mo_Casa_Det detSelect)
+        //    var casaActualizada = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == _casa.Id).Single();
+
+        //    if (casaActualizada != null)
+        //    {
+        //        _casa.Saldo = casaActualizada.Saldo;
+
+        //        await SupabaseClient.From<Mo_Casa>().Update(_casa);
+        //        //Le decimos a Blazor que "refresh" de nuevo la pantalla
+        //        StateHasChanged();
+        //    }
+
+        //}
+
+        private async Task Editar(Mo_Casa_Det detSelect)
         {
             _DetalleSeleccionado = detSelect;
             _ValorAntiguo = detSelect.Cantidad;
-            Visible = true;
-        }
+            //Visible = true;
 
-        private async Task CerrarModal()
-        {
-            Visible = false;
-
-            var casaActualizada = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == _casa.Id).Single();
-
-            if (casaActualizada != null)
+            var parameter = new DialogParameters
             {
-                _casa.Saldo = casaActualizada.Saldo;
+                ["DetalleCasa"] = _DetalleSeleccionado,
+                ["ValorAntiguo"] = _ValorAntiguo
+            };
 
-                await SupabaseClient.From<Mo_Casa>().Update(_casa);
-                //Le decimos a Blazor que "refresh" de nuevo la pantalla
+            var options = new DialogOptions { CloseOnEscapeKey = true, };
+
+            var dialog = await DialogService.ShowAsync<Modal_Edicion_Detalle>("Simple Dialog", parameter, options);
+
+            var res = await dialog.Result;
+            if (!res.Canceled)
+            {
+                await CargarDatos(true);
                 StateHasChanged();
+                //Snackbar.add("¡Datos actualizados con éxito! 🚀", Severity.Success);
             }
-
         }
 
-        Mo_Casa_Det? _DetalleSeleccionado;
-        decimal? _ValorAntiguo;
 
+        //private async Task FocusInputDescripcion()
+        //{
+        //    await focusInputDescrip.FocusAsync();
+        //}
 
-        private async Task FocusInputDescripcion()
+        private async Task GuardarCambiosCab()
         {
-            await focusInputDescrip.FocusAsync();
+            //SI ES UN ALTA NUEVA GUARDAMOS EL OBJETO Y RECUPERAMOS EL ID QUE LE GENERA LA BBDD
+            if (_casa.Id == 0)
+            {
+                var resInsert = await SupabaseClient.From<Mo_Casa>().Insert(_casa);
+
+                if (resInsert != null &&
+                    resInsert.Models != null &&
+                    resInsert.Models.Any())
+                {
+                    var recuperarId = resInsert.Models.FirstOrDefault();
+                    if (recuperarId != null)
+                    {
+                        _casa.Id = recuperarId.Id;
+                    }
+                }
+            }
+            else
+            {
+                //HACEMOS UN UPDATE CON LOS CAMBIOS.
+                await SupabaseClient.From<Mo_Casa>().Update(_casa);
+            }
         }
 
         private List<Mo_Casa_Det> MostrarDetalle()
@@ -149,12 +193,11 @@ namespace ProyectoCasa.Components.Pages.Casa
         [Parameter]
         public long? _Id { get; set; }
 
-        public bool Visible { get; set; }
+        //public bool Visible { get; set; }
 
         public Mo_Casa _casa { get; set; } = new Mo_Casa();
 
         public Mo_Casa_Det _det { get; set; } = new Mo_Casa_Det();
-
 
         //COMPROBAR SI TIENE VALOR Y SI ES MAYOR QUE 0
         public bool esEdicion => _Id.HasValue && _Id.Value > 0;
