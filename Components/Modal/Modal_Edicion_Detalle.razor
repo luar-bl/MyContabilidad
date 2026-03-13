@@ -1,4 +1,4 @@
-﻿
+﻿@rendermode InteractiveServer
 @* @if(Visible)
 {
     <div class="modal show d-block" tabindex="-1">
@@ -53,42 +53,41 @@
 }
  *@
 
-    <MudDialog>
-        <TitleContent>
-            Editar Detalle
-        </TitleContent>
-        <DialogContent>
-            @if (DetalleCasa != null)
-            {
-                <MudItem xs="12" md="6">
-                    <MudGrid>
-                        <MudItem xs="12" md="12">
-                            <MudTextField @bind-Value="DetalleCasa.Descripcion"
-                                          Label="Descripción 📋"
-                                          Variant="Variant.Outlined"
-                                          Margin="Margin.Normal"
-                                          For="@(() => DetalleCasa.Descripcion)"
-                                          AutoFocus="true"/>
-                        </MudItem>
-                        <MudItem xs="12" md="8">
-                            <MudTextField @bind-Value="DetalleCasa.Cantidad"
-                                          Label="Cantidad 🤏"
-                                          Variant="Variant.Outlined"
-                                          Margin="Margin.Normal"
-                                          For="@(() => DetalleCasa.Cantidad)"/>
-                        </MudItem>
-                        <MudItem xs="12" md="8">
-                            <MudTextField @bind-Value="DetalleCasa.Fecha"
-                                          Label="Fecha 📅"
-                                          Variant="Variant.Outlined"
-                                          Margin="Margin.Normal"
-                                          For="@(() => DetalleCasa.Fecha)"/>
-                        </MudItem>
-                    </MudGrid>
-                </MudItem>
-            }
-        </DialogContent>
+<MudDialog>
+    <TitleContent>
+        Editar Detalle
+    </TitleContent>
     <DialogContent>
+        @if (DetalleCasa != null)
+        {
+            <MudItem xs="12" md="6">
+                <MudGrid>
+                    <MudItem xs="12" md="12">
+                        <MudTextField @bind-Value="DetalleCasa.Descripcion"
+                                        Label="Descripción 📋"
+                                        Variant="Variant.Outlined"
+                                        Margin="Margin.Normal"
+                                        For="@(() => DetalleCasa.Descripcion)"
+                                        AutoFocus="true"/>
+                    </MudItem>
+                    <MudItem xs="12" md="8">
+                        <MudTextField @bind-Value="DetalleCasa.Cantidad"
+                                        Label="Cantidad 🤏"
+                                        Variant="Variant.Outlined"
+                                        Margin="Margin.Normal"
+                                        For="@(() => DetalleCasa.Cantidad)"/>
+                    </MudItem>
+                    <MudItem xs="12" md="8">
+                        <MudTextField @bind-Value="DetalleCasa.Fecha"
+                                        Label="Fecha 📅"
+                                        Variant="Variant.Outlined"
+                                        Margin="Margin.Normal"
+                                        For="@(() => DetalleCasa.Fecha)"/>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        }
+
         @if (DetalleFactura != null)
         {
             <MudItem xs="12" md="6">
@@ -119,10 +118,9 @@
             </MudItem>
         }
     </DialogContent>
-
-        <DialogActions>
-            <MudButton OnClick="Cerrar">Salir</MudButton>
-            <MudButton Color="Color.Primary" OnClick="GuardarDatos">Guardar</MudButton>
-        </DialogActions>
+    <DialogActions>
+        <MudButton OnClick="Cerrar">Salir</MudButton>
+        <MudButton Color="Color.Primary" OnClick="GuardarDatos">Guardar</MudButton>
+    </DialogActions>
         
-    </MudDialog>
+</MudDialog>

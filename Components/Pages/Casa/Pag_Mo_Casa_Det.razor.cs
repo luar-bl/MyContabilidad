@@ -10,7 +10,7 @@ namespace ProyectoCasa.Components.Pages.Casa
     public partial class Pag_Mo_Casa_Det
     {
 
-        Mo_Casa_Det? _DetalleSeleccionado;
+     
         decimal? _ValorAntiguo;
 
         ElementReference focusInputDescrip;
@@ -119,19 +119,18 @@ namespace ProyectoCasa.Components.Pages.Casa
 
         private async Task Editar(Mo_Casa_Det detSelect)
         {
-            _DetalleSeleccionado = detSelect;
             _ValorAntiguo = detSelect.Cantidad;
             //Visible = true;
 
             var parameter = new DialogParameters
             {
-                ["DetalleCasa"] = _DetalleSeleccionado,
+                ["DetalleCasa"] = detSelect,
                 ["ValorAntiguo"] = _ValorAntiguo
             };
 
             var options = new DialogOptions { CloseOnEscapeKey = true, };
 
-            var dialog = await DialogService.ShowAsync<Modal_Edicion_Detalle>("Simple Dialog", parameter, options);
+            var dialog = await DialogService.ShowAsync<Modal_Edicion_Detalle>("", parameter, options);
 
             var res = await dialog.Result;
             if (!res.Canceled)

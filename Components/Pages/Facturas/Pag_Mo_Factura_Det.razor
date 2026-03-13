@@ -88,7 +88,32 @@
                 <MudItem xs="12" md="12">
                     <MudCard>
                         <MudCardContent>
+                            <MudDataGrid Items="@MostrarDetalle()"
+                                         T="Mo_Factura_Det"
+                                         Hover
+                                         Height="500px"
+                                         FixedHeader
+                                         Groupable
+                                         Hideable="false"
+                                         ShowMenuIcon="true">
+                                         <Columns>
+                                               <PropertyColumn Property="x => x.Id" Title="Id 🏴" />
+                                               <PropertyColumn Property="x => x.Producto" Title="Producto 📦" />
+                                               <PropertyColumn Property="x => x.Precio" Title="Precio 💲" Format="C2" />
+                                               <PropertyColumn Property="x => x.Cantidad" Title="Cantidad 🤏" />
+                                               <PropertyColumn Property="x => x.Total" Title="Total💲 x Producto" Format="C2">
+                                                    <FooterTemplate>
+                                                        Total: @context.Items.Sum(x => x.Total).ToString()€
+                                                    </FooterTemplate>
+                                                </PropertyColumn>
 
+                                                <TemplateColumn>
+                                                    <CellTemplate>
+                                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="@(() => Editar(context.Item))"/>
+                                                    </CellTemplate>
+                                                </TemplateColumn>
+                                         </Columns>
+                            </MudDataGrid>
                         </MudCardContent>
                     </MudCard>
                 </MudItem>

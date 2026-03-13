@@ -13,10 +13,6 @@ namespace ProyectoCasa.Components.Modal
 
         private async Task Cerrar()
         {
-            await InvokeAsync(() =>
-            {
-                StateHasChanged();
-            });
             MudDialog.Close(DialogResult.Ok(true));
         }
 
@@ -77,10 +73,6 @@ namespace ProyectoCasa.Components.Modal
 
             DetalleCasa = null;
             DetalleFactura = null;
-            await InvokeAsync(() =>
-            {
-                StateHasChanged();
-            });
             await Cerrar();
         }
 
@@ -93,14 +85,13 @@ namespace ProyectoCasa.Components.Modal
         [Parameter]
         public decimal? ValorAntiguo { get; set; }
 
-
         [Parameter]
         public Mo_Factura_Det? DetalleFactura { get; set; }
 
-        [Parameter]
-        public bool Visible { get; set; }
+        //[Parameter]
+        //public bool Visible { get; set; }
 
-        [Parameter]
-        public EventCallback OnClose { get; set; }
+        //[Parameter]
+        //public EventCallback OnClose { get; set; }
     }
 }
