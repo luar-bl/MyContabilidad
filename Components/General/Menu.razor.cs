@@ -4,7 +4,8 @@
     {
         private void NavegarAListadoCasas()
         {
-            Navigation.NavigateTo("/casa/Pag_Mo_Casa_Cab");
+            Navigation.NavigateTo("/gestion-casas");
+            //Navigation.NavigateTo("/casa/Pag_Mo_Casa_Cab");
         }
 
         private void NavegarAListadoFacturas()

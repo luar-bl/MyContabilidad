@@ -24,7 +24,8 @@ namespace ProyectoCasa.Components.Pages.Sesion
 
                 var targetUrl = !string.IsNullOrEmpty(returnUrl)
                     ? Uri.UnescapeDataString(returnUrl)
-                    : "/casa/Pag_Mo_Casa_Cab";
+                    : "/gestion-casas";
+                    //: "/casa/Pag_Mo_Casa_Cab";
 
                 Navigation.NavigateTo(targetUrl, true);
             }

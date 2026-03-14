@@ -6,12 +6,12 @@ namespace ProyectoCasa.Components.Pages.Casa
     {
         private void EditarCasa(long id)
         {
-            Navigation.NavigateTo($"/casa/Pag_Mo_Casa_Det/{id}");
+            Navigation.NavigateTo($"/detalle-casa/{id}");
         }
 
         private void IrANuevaCasa()
         {
-            Navigation.NavigateTo("/casa/Pag_Mo_Casa_Det");
+            Navigation.NavigateTo("/detalle-casa");
         }
 
         private async Task MostrarCasa()

@@ -29,7 +29,8 @@ namespace ProyectoCasa.Components
             if (authState.User.Identity != null && authState.User.Identity.IsAuthenticated)
             {
                 sessionLoaded = true;
-                Navigation.NavigateTo(returnUrl ?? "/casa/Pag_Mo_Casa_Cab");
+                //Navigation.NavigateTo(returnUrl ?? "/casa/Pag_Mo_Casa_Cab");
+                Navigation.NavigateTo(returnUrl ?? "/gestion-casas");
             }
             else
             {

@@ -101,7 +101,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
 
 
             _det = new Mo_Factura_Det();
-            await FocusInputProducto();
+            //await FocusInputProducto();
         }
 
 
@@ -158,10 +158,10 @@ namespace ProyectoCasa.Components.Pages.Facturas
         }
 
         //ESTE MÉTODO HACE FOCUS AL 'INPUT PRODUCTO - HTML'
-        private async Task FocusInputProducto()
-        {
-            await inputProducto.FocusAsync();
-        }
+        //private async Task FocusInputProducto()
+        //{
+        //    await inputProducto.FocusAsync();
+        //}
 
         //SIRVE PARA EL SELECT OPTION EN LA UI
         private List<Mo_Casa> MostrarDatosCasas()

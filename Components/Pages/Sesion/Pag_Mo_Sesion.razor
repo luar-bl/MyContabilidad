@@ -7,14 +7,44 @@
 
 <PageTitle>Login</PageTitle>
 
-<div class="container mx-auto text-center mt-5">
+<MudLayout>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Small" Class="mt-10">
+            <MudGrid  Justify="Justify.Center">
+                <MudItem xs="12">
+                    <MudText Align="Align.Left" Typo="Typo.h3" Class="mb-4">Login</MudText>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="loginModel.Usuario"
+                                  Label="Usuario 🧢"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Normal"
+                                  For="@(() => loginModel.Usuario)" />
+
+                    <MudTextField @bind-Value="loginModel.Password"
+                                  InputType="InputType.Password"
+                                  Label="Password  🔑"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Normal"
+                                  For="@(() => loginModel.Password)" />
+                </MudItem>
+                <MudItem xs="12" Class="d-flex justify-center mt-4">
+                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" @onclick="OnSubmit">¡Vamos!</MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+@* <div class="container mx-auto text-center mt-5">
     @if (!string.IsNullOrEmpty(errorMessage))
     {
         <div class="alert alert-danger">@errorMessage</div>
     }
 
     @* Llamamos a OnSubmit que es el método de tu C# *@
-    <EditForm Model="@loginModel" OnValidSubmit="OnSubmit">
+@* <EditForm Model="@loginModel" OnValidSubmit="OnSubmit">
         <DataAnnotationsValidator />
 
         <div class="mb-3">
@@ -27,4 +57,4 @@
         </div>
         <button type="submit" class="btn btn-primary">Entrar 🚀</button>
     </EditForm>
-</div>
+</div> *@

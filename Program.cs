@@ -65,8 +65,23 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 #endregion
 
-var app = builder.Build();
 
+// --- FORZAR FORMATO ESPAÑOL ---
+var supportedCultures = new[] { "es-ES" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+builder.Services.Configure<RequestLocalizationOptions>(options => {
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("es-ES");
+    options.SupportedCultures = supportedCultures.Select(c => new System.Globalization.CultureInfo(c)).ToList();
+    options.SupportedUICultures = supportedCultures.Select(c => new System.Globalization.CultureInfo(c)).ToList();
+});
+// ------------------------------
+
+var app = builder.Build();
+app.UseRequestLocalization(supportedCultures[0]);
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

@@ -3,9 +3,24 @@
 
 <PageTitle>Home</PageTitle>
 
-<!-- Contenedor principal donde irá toda la información -->
+<MudLayout>
+    <MudMainContent>
+        <MudGrid Justify="Justify.Center" Class="mt-10">
+            <MudItem sm="12" md="12">
+                <MudText Align="Align.Center" Typo="Typo.h3">Contabilidad de casa</MudText>
+                <MudText Align="Align.Center" Typo="Typo.subtitle1">By Raul Blanco Segura</MudText>
+            </MudItem>
+            <MudItem xs="12" Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="IrAPagina">¡Vamos!</MudButton>
+           </MudItem>
+
+        </MudGrid>
+    </MudMainContent>
+</MudLayout>
+
+@* 
 <div class="container divInformacionPaginaPrincipal mx-auto text-center">
     <h1>Contabilidad de casa</h1>
     <p>By Raul Blanco Segura.</p>
     <button class="btn btn-primary" @onclick="IrAPagina">¡Vamos!</button>
-</div>
+</div> *@
