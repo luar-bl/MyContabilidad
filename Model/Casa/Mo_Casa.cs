@@ -1,4 +1,5 @@
-﻿using Supabase.Postgrest.Attributes;
+﻿using ProyectoCasa.Model.Ahorro;
+using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 using System.Runtime.Serialization;
 
@@ -14,6 +15,9 @@ namespace ProyectoCasa.Model.Casa
 
         [IgnoreDataMember]
         public List<Mo_Casa_Det> LstDetalle { get; set; }
+
+        [IgnoreDataMember]
+        public List<Mo_Ahorro> LstAhorros { get; set; }
 
         [PrimaryKey("id", false)]
         public long Id { get; set; }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Razor.Internal;
 using MudBlazor;
 using ProyectoCasa.Components.Modal;
 using ProyectoCasa.Components.Pages.Facturas;
+using ProyectoCasa.Model.Ahorro;
 using ProyectoCasa.Model.Casa;
 
 namespace ProyectoCasa.Components.Pages.Casa
@@ -10,7 +11,7 @@ namespace ProyectoCasa.Components.Pages.Casa
     public partial class Pag_Mo_Casa_Det
     {
 
-     
+
         decimal? _ValorAntiguo;
 
         ElementReference focusInputDescrip;
@@ -130,14 +131,14 @@ namespace ProyectoCasa.Components.Pages.Casa
 
             var options = new DialogOptions { CloseOnEscapeKey = true, };
 
-            var dialog = await DialogService.ShowAsync<Modal_Edicion_Detalle>("", parameter, options);
+            var dialog = await DialogService.ShowAsync<Modal_Edicion_Detalle>(string.Empty, parameter, options);
 
             var res = await dialog.Result;
             if (!res.Canceled)
             {
                 await CargarDatos(true);
                 StateHasChanged();
-                //Snackbar.add("¡Datos actualizados con éxito! 🚀", Severity.Success);
+                //Snackbar.add("¡Datos actualizados con éxito!", Severity.Success);
             }
         }
 
@@ -170,6 +171,16 @@ namespace ProyectoCasa.Components.Pages.Casa
                 //HACEMOS UN UPDATE CON LOS CAMBIOS.
                 await SupabaseClient.From<Mo_Casa>().Update(_casa);
             }
+        }
+
+        private List<Mo_Ahorro> MostrarAhorro()
+        {
+            if (_casa?.LstAhorros == null)
+            {
+                return _casa?.LstAhorros = new List<Mo_Ahorro>();
+            }
+
+            return _casa.LstAhorros.OrderBy(x => x.Id).ToList();
         }
 
         private List<Mo_Casa_Det> MostrarDetalle()

@@ -4,6 +4,7 @@
 
 @using ProyectoCasa.Components.General
 @using ProyectoCasa.Components.Modal
+@using ProyectoCasa.Model.Ahorro
 @using ProyectoCasa.Model.Casa
 
 
@@ -107,39 +108,57 @@
     </MudMainContent>
 
     <MudContainer Class="pt-10">
-        <MudItem xs="12" md="12">
-            <MudCard>
-                <MudDataGrid T="Mo_Casa_Det"
-                                FixedHeader
-                                Hover
-                                Groupable ="false"
-                                Hideable="false"
-                                ShowMenuIcon="true"
-                                Items="@MostrarDetalle()">
-                    <Columns>
-                        <PropertyColumn CellStyle="white-space: nowrap;"
-                                        HeaderStyle="white-space: nowrap;"
-                                        Property="c => c.Id" Title="Id🏴"></PropertyColumn>
-                        <PropertyColumn CellStyle="white-space: nowrap;"
-                                        HeaderStyle="white-space: nowrap;"
-                                        Property="c => c.Descripcion" Title="Descripcion🏴"></PropertyColumn>
-                        <PropertyColumn CellStyle="white-space: nowrap;"
-                                        HeaderStyle="white-space: nowrap;"
-                                        Property="c => c.Cantidad" Title="Cantidad🤏"></PropertyColumn>
-                        <PropertyColumn CellStyle="white-space: nowrap;"
-                                        HeaderStyle="white-space: nowrap;"
-                                        Property="c => c.Fecha" Title="Fecha📅"></PropertyColumn>
-                        <TemplateColumn>
-                            <CellTemplate>
-                                <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => Editar(context.Item))" />
-                            </CellTemplate>
-                        </TemplateColumn>
-                    </Columns>
-                </MudDataGrid>
-            </MudCard>
-        </MudItem>
+        <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" TabPanelsClass="pa-6">
+            <MudTabPanel Text="Detalle Casa">
+                <MudItem xs="12" md="12">
+                    <MudCard>
+                        <MudDataGrid T="Mo_Casa_Det"
+                                     FixedHeader
+                                     Hover
+                                     Groupable="false"
+                                     Hideable="false"
+                                     ShowMenuIcon="true"
+                                     Items="@MostrarDetalle()">
+                            <Columns>
+                                <PropertyColumn CellStyle="white-space: nowrap;"
+                                                HeaderStyle="white-space: nowrap;"
+                                                Property="c => c.Id" Title="Id🏴"></PropertyColumn>
+                                <PropertyColumn CellStyle="white-space: nowrap;"
+                                                HeaderStyle="white-space: nowrap;"
+                                                Property="c => c.Descripcion" Title="Descripcion🏴"></PropertyColumn>
+                                <PropertyColumn CellStyle="white-space: nowrap;"
+                                                HeaderStyle="white-space: nowrap;"
+                                                Property="c => c.Cantidad" Title="Cantidad🤏"></PropertyColumn>
+                                <PropertyColumn CellStyle="white-space: nowrap;"
+                                                HeaderStyle="white-space: nowrap;"
+                                                Property="c => c.Fecha" Title="Fecha📅"></PropertyColumn>
+                                <TemplateColumn>
+                                    <CellTemplate>
+                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => Editar(context.Item))" />
+                                    </CellTemplate>
+                                </TemplateColumn>
+                            </Columns>
+                        </MudDataGrid>
+                    </MudCard>
+                </MudItem>
+            </MudTabPanel>
+            <MudTabPanel Text="Detalle Inversión/Ahorro">
+               <MudItem xs="12" md="12">
+                   <MudCard>
+                        <MudDataGrid T="Mo_Ahorro" 
+                                     FixedHeader
+                                     Hover
+                                     Groupable="false"
+                                     Hideable="false"
+                                     ShowMenuIcon="true"
+                                     Items="@MostrarAhorro()">
+                           
+                       </MudDataGrid>
+                   </MudCard>
+               </MudItem>
+            </MudTabPanel>
+        </MudTabs>
     </MudContainer>
-    
 </MudLayout>
 
 @*

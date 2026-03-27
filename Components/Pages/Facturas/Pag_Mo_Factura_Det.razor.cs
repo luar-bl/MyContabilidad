@@ -217,7 +217,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
         //ESTE MÉTODO ELIMINA EL DETALLE Y DEVUELVE EL SALDO A LA CASA QUE PERTENECE.
         private async Task Eliminar(Mo_Factura_Det detFact)
         {
-            if (detFact == null || detFact?.Id <= 0) { errorMensaje = "!No se ha podido eliminar el detalle!"; return; }
+            if (detFact == null || detFact?.Id <= 0) { errorMensaje = "¡No se ha podido eliminar el detalle!"; return; }
 
             try
             {
@@ -226,21 +226,17 @@ namespace ProyectoCasa.Components.Pages.Facturas
                 if (objDet == null) { return; }
 
                 //GUARDAMOS EL TOTAL GASTADO DE ESA LÍNEA
-                decimal importeA_Borrar = _facturaCab.TotalGastado;
+                //decimal importeA_Borrar = _facturaCab.TotalGastado;
+                decimal importeA_Borrar = objDet.Total;
 
                 //RESTAMOS EL TOTALGASTADO DE ESTA FACTURA
-                _facturaCab.TotalGastado -= objDet.Total;
+                _facturaCab.TotalGastado -= importeA_Borrar;
 
                 //BUSCAMOS LA CASA QUE PERTENECE EL DETALLE DE LA FACTURA Y LE SUMAMOS EL IMPORTE.
                 var casa = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == _facturaCab.CasaId).Single();
-                if (casa != null)
-                {
-                    casa.Saldo += importeA_Borrar - _facturaCab.TotalGastado;
-                }
-                else
-                {
-                    return;
-                }
+                if (casa == null) { return; }
+
+                casa.Saldo += importeA_Borrar;
 
                 //BORRAMOS Y ACTUALIZAMOS LA INFORMACIÓN
                 await SupabaseClient.From<Mo_Factura_Det>().Delete(objDet);

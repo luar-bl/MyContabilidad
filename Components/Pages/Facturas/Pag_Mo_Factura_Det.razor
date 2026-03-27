@@ -138,6 +138,11 @@
 
                                                 <TemplateColumn>
                                                     <CellTemplate>
+                                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => Eliminar(context.Item))"/>
+                                                    </CellTemplate>
+                                                </TemplateColumn>
+                                                <TemplateColumn>
+                                                    <CellTemplate>
                                                         <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="@(() => Editar(context.Item))"/>
                                                     </CellTemplate>
                                                 </TemplateColumn>
