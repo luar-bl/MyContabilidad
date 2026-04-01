@@ -52,7 +52,7 @@ namespace ProyectoCasa.Components.Pages.Casa
 
                 _det.CasaId = _casa.Id;
                 _casa.LstDetalle.Add(_det);
-                _det.Fecha = Convert.ToDateTime(_det.Fecha.ToString("MM/dd/yyyy"));
+                _det.Fecha = Convert.ToDateTime(_det.Fecha?.ToString("MM/dd/yyyy"));
                 _casa.Saldo += _det.Cantidad;
 
 
@@ -69,6 +69,34 @@ namespace ProyectoCasa.Components.Pages.Casa
 
             _det = new Mo_Casa_Det();
             //await FocusInputDescripcion();
+        }
+
+        private async Task AgregarAhorro()
+        {
+            if (SupabaseClient == null)
+            {
+                return;
+            }
+
+            nuevoAhorro = true;
+
+            var parameter = new DialogParameters()
+            {
+                ["NuevoAhorro"] = nuevoAhorro,
+                ["IdCasa"] = _casa.Id
+            };
+
+            var options = new DialogOptions { CloseOnEscapeKey = true, };
+
+            var dialog = await DialogService.ShowAsync<Modal_Edicion_Detalle>("Añadir ahorro", parameter, options);
+
+            var res = await dialog.Result;
+            if (!res.Canceled)
+            {
+                await CargarDatos(true);
+                StateHasChanged();
+                //Snackbar.add("¡Datos actualizados con éxito!", Severity.Success);
+            }
         }
 
         private async Task CargarDatos(bool esEdicion)
@@ -91,6 +119,18 @@ namespace ProyectoCasa.Components.Pages.Casa
                     {
                         _casa.LstDetalle = new List<Mo_Casa_Det>();
                     }
+
+                    var lstDetalleAhorros = await SupabaseClient.From<Mo_Ahorro>().Where(x => x.CasaId == _casa.Id).Get();
+                    if (lstDetalleAhorros.Models.Count > 0)
+                    {
+                        _casa.LstAhorros = lstDetalleAhorros.Models.ToList();
+                    }
+                    else
+                    {
+                        _casa.LstAhorros = new List<Mo_Ahorro>();
+                    }
+
+
                 }
                 else
                 {
@@ -118,7 +158,7 @@ namespace ProyectoCasa.Components.Pages.Casa
 
         //}
 
-        private async Task Editar(Mo_Casa_Det detSelect)
+        private async Task EditarDetalleCasa(Mo_Casa_Det detSelect)
         {
             _ValorAntiguo = detSelect.Cantidad;
             //Visible = true;
@@ -192,6 +232,8 @@ namespace ProyectoCasa.Components.Pages.Casa
 
             return _casa.LstDetalle.OrderBy(x => x.Id).ToList();
         }
+
+        private bool nuevoAhorro { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

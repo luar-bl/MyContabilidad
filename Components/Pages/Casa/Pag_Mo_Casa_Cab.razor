@@ -36,26 +36,26 @@
 
 </div> *@
 
-<MudContainer Style="margin-top: 90px;">
+<MudContainer Style="margin-top: 90px;" MaxWidth="MaxWidth.Large">
     <MudGrid>
         <MudItem xs="12" md="12">
-            <MudPaper Class="mx-auto">
-                <MudText Class="text-center" Typo="Typo.h5">Casa</MudText>
-            </MudPaper>
+            <MudText Class="text-center" Typo="Typo.h5">Casa</MudText>
+            <hr/>
         </MudItem>
-        <MudItem xs="12" md="6">
-            <MudButton 
-                Variant="Variant.Filled"
-                EndIcon="@Icons.Material.Filled.Home" 
-                Color="Color.Primary"
-                OnClick="IrANuevaCasa">Añadir Casa</MudButton>
+        <MudItem xs="12" md="12">
+            <MudStack Row="true", Justify="Justify.FlexEnd">
+                <MudButton Variant="Variant.Filled"
+                           EndIcon="@Icons.Material.Filled.Home"
+                           Color="Color.Primary"
+                           OnClick="IrANuevaCasa">Añadir Casa</MudButton>
+            </MudStack>
         </MudItem>
     </MudGrid>
 
     <MudDataGrid Items="@LstCabecera"
                  T="Mo_Casa"
                  Hideable="true"
-                 ShowMenuIcon="true">
+                 ShowMenuIcon="true" Dense="true">
         <Columns>
             <PropertyColumn 
                 CellStyle="white-space: nowrap;"

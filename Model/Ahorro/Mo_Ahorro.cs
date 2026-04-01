@@ -16,9 +16,9 @@ namespace ProyectoCasa.Model.Ahorro
         public long Id { get; set; }
 
         [Column("descripcion")]
-        public string Descripcion { get; set; }
+        public string? Descripcion { get; set; }
 
         [Column("cantidad")]
-        public decimal Cantidad { get; set; }
+        public decimal? Cantidad { get; set; }
     }
 }

@@ -28,5 +28,8 @@ namespace ProyectoCasa.Model.Casa
         [Column("saldo")]
         public decimal Saldo { get; set; }
 
+        [Column("ahorro")]
+        public decimal Ahorro { get; set; }
+
     }
 }

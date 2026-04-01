@@ -41,6 +41,7 @@ namespace ProyectoCasa.Model.Factura
         Restaurantes = 3,
         Ropa = 4,
         ComprasOnline = 5,
-        Perra = 6
+        Perra = 6,
+        Ahorro = 7
     }
 }

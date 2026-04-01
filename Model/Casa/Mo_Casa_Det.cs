@@ -19,7 +19,7 @@ namespace ProyectoCasa.Model.Casa
         public decimal Cantidad { get; set; }
 
         [Column("fecha")]
-        public DateTime Fecha { get; set; } =DateTime.Today;
+        public DateTime? Fecha { get; set; } = DateTime.Today;
 
         [Column("casaid")]
         public long CasaId { get; set; }
