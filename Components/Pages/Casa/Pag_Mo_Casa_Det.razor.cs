@@ -52,7 +52,7 @@ namespace ProyectoCasa.Components.Pages.Casa
 
                 _det.CasaId = _casa.Id;
                 _casa.LstDetalle.Add(_det);
-                _det.Fecha = Convert.ToDateTime(_det.Fecha?.ToString("MM/dd/yyyy"));
+                _det.Fecha = Convert.ToDateTime(_det.Fecha?.ToString("yyyy/MM/dd"));
                 _casa.Saldo += _det.Cantidad;
 
 
