@@ -77,18 +77,22 @@ namespace ProyectoCasa.Components.Modal
                 if (string.IsNullOrWhiteSpace(DetalleAhorro.Descripcion) || DetalleAhorro.Cantidad <= 0) { return; }
                 DetalleAhorro.CasaId = IdCasa;
 
-                var obtenerCasa = await SupabaseClient.From<Mo_Casa>().Where(c => c.Id == IdCasa).Single();
-                if (obtenerCasa == null)
+                var casaActual = await SupabaseClient.From<Mo_Casa>().Where(c => c.Id == IdCasa).Single();
+                if (casaActual == null)
                 {
                     return;
                 }
 
+                casaActual.Ahorro += Convert.ToDecimal(DetalleAhorro.Cantidad);
+                casaActual.Saldo -= Convert.ToDecimal(DetalleAhorro.Cantidad);
+
+
                 await SupabaseClient.From<Mo_Ahorro>().Insert(DetalleAhorro);
 
                 Mo_Factura_Cab facturaAhorro = new Mo_Factura_Cab();
-                facturaAhorro.Descripcion = $"Ahorro casa {obtenerCasa.Descripcion}";
+                facturaAhorro.Descripcion = $"Ahorro casa {casaActual.Descripcion}";
                 facturaAhorro.Fecha = DateTime.Today;
-                facturaAhorro.CasaId = obtenerCasa.Id;
+                facturaAhorro.CasaId = casaActual.Id;
                 facturaAhorro.TipoFactura = TipoFactura.Ahorro;
 
                 var guardarFactura = await SupabaseClient.From<Mo_Factura_Cab>().Insert(facturaAhorro);

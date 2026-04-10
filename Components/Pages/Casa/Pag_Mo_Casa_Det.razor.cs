@@ -11,6 +11,7 @@ namespace ProyectoCasa.Components.Pages.Casa
     public partial class Pag_Mo_Casa_Det
     {
 
+        int _saldoTotal;
 
         decimal? _ValorAntiguo;
 
@@ -109,6 +110,8 @@ namespace ProyectoCasa.Components.Pages.Casa
                     _casa.Id = casaEncontrada.Id;
                     _casa.Descripcion = casaEncontrada.Descripcion;
                     _casa.Saldo = casaEncontrada.Saldo;
+
+                    _casa.SaldoTotal = Convert.ToDecimal(casaEncontrada.Saldo + casaEncontrada.LstAhorros.Sum(a => a.Cantidad));
 
                     var lstDetalle = await SupabaseClient.From<Mo_Casa_Det>().Where(x => x.CasaId == _casa.Id).Get();
                     if (lstDetalle.Models.Count > 0)
@@ -253,5 +256,18 @@ namespace ProyectoCasa.Components.Pages.Casa
 
         //COMPROBAR SI TIENE VALOR Y SI ES MAYOR QUE 0
         public bool esEdicion => _Id.HasValue && _Id.Value > 0;
+
+        public int SaldoTotal
+        {
+            get
+            {
+                return _saldoTotal;
+            }
+            set
+            {
+                _saldoTotal = value;
+                InvokeAsync(StateHasChanged);
+            }
+        }
     }
 }

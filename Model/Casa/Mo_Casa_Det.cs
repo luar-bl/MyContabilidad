@@ -23,5 +23,6 @@ namespace ProyectoCasa.Model.Casa
 
         [Column("casaid")]
         public long CasaId { get; set; }
+
     }
 }
