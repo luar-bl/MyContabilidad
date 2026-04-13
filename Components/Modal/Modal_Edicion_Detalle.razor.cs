@@ -22,6 +22,12 @@ namespace ProyectoCasa.Components.Modal
         {
             if (DetalleCasa != null)
             {
+
+                if (DetalleCasa.Cantidad <= 0)
+                {
+                    return;
+                }
+
                 //ACTUALIZO EL DETALLE
                 await SupabaseClient.From<Mo_Casa_Det>().Update(DetalleCasa);
 
@@ -41,6 +47,11 @@ namespace ProyectoCasa.Components.Modal
 
             if (DetalleFactura != null)
             {
+                if (DetalleFactura.Precio <= 0)
+                {
+                    return;
+                }
+
                 DetalleFactura.Total = DetalleFactura.Precio * DetalleFactura.Cantidad;
                 await SupabaseClient.From<Mo_Factura_Det>().Update(DetalleFactura);
 
@@ -86,18 +97,23 @@ namespace ProyectoCasa.Components.Modal
                 casaActual.Ahorro += Convert.ToDecimal(DetalleAhorro.Cantidad);
                 casaActual.Saldo -= Convert.ToDecimal(DetalleAhorro.Cantidad);
 
+                var guardarAhorro = await SupabaseClient.From<Mo_Ahorro>().Insert(DetalleAhorro);
+                var ahorroGuardado = guardarAhorro.Models.FirstOrDefault() ?? null;
 
-                await SupabaseClient.From<Mo_Ahorro>().Insert(DetalleAhorro);
+
+                await SupabaseClient.From<Mo_Casa>().Update(casaActual);
 
                 Mo_Factura_Cab facturaAhorro = new Mo_Factura_Cab();
                 facturaAhorro.Descripcion = $"Ahorro casa {casaActual.Descripcion}";
                 facturaAhorro.Fecha = DateTime.Today;
                 facturaAhorro.CasaId = casaActual.Id;
                 facturaAhorro.TipoFactura = TipoFactura.Ahorro;
+                facturaAhorro.AhorroId = ahorroGuardado.Id;
 
                 var guardarFactura = await SupabaseClient.From<Mo_Factura_Cab>().Insert(facturaAhorro);
                 var obtenerFacturaNueva = guardarFactura.Models.FirstOrDefault() ?? null;
                 if (obtenerFacturaNueva == null) { return; }
+
 
                 Mo_Factura_Det detalleFactura = new Mo_Factura_Det();
                 detalleFactura.FacturaCabId = obtenerFacturaNueva.Id;
@@ -110,10 +126,45 @@ namespace ProyectoCasa.Components.Modal
 
                 await SupabaseClient.From<Mo_Factura_Det>().Insert(detalleFactura);
             }
+            else if (DetalleAhorro != null && NuevoAhorro == false)
+            {
+                if (DetalleAhorro.Cantidad <= 0) { return; }
+
+                //ACTUALIZO EL DETALLE
+                await SupabaseClient.From<Mo_Ahorro>().Update(DetalleAhorro);
+
+
+                //OBTENO LA CASA
+                var casa = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == DetalleAhorro.CasaId).Single();
+                if (casa != null)
+                {
+
+                    decimal diferencia = Convert.ToDecimal(DetalleAhorro.Cantidad - ValorAntiguo);
+                    casa.Ahorro += Convert.ToDecimal(diferencia);
+                    casa.Saldo -= diferencia;
+                    //ACTUALIZO LA CABECERA
+                    await SupabaseClient.From<Mo_Casa>().Update(casa);
+                }
+
+                //BUSCAR LA FACTURA Y MODIFICAR EL DETALLE
+                var facturaCab = await SupabaseClient.From<Mo_Factura_Cab>().Where(a => a.AhorroId == DetalleAhorro.Id).Single();
+                if (facturaCab != null)
+                {
+                    var detalle = await SupabaseClient.From<Mo_Factura_Det>().Where(f => f.FacturaCabId == facturaCab.Id).Get();
+                    if (detalle != null && detalle.Models.Any())
+                    {
+                        var res = detalle.Models.FirstOrDefault();
+                        res.Precio = Convert.ToDecimal(DetalleAhorro.Cantidad);
+                        res.Total = res.Precio * res.Cantidad;
+                        await SupabaseClient.From<Mo_Factura_Det>().Update(res);
+                    }
+                }
+            }
 
 
             DetalleCasa = null;
             DetalleFactura = null;
+            DetalleAhorro = null;
             await Cerrar();
         }
 

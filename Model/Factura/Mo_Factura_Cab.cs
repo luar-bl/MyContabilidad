@@ -20,6 +20,9 @@ namespace ProyectoCasa.Model.Factura
         [Column("casaid")]
         public long CasaId { get; set; }
 
+        [Column("ahorroid")]
+        public long? AhorroId { get; set; }
+
         [PrimaryKey("id", false)]
         public long Id { get; set; }
         [Column("descripcion")]

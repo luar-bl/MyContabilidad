@@ -60,6 +60,16 @@
                                                   For="@(() => _casa.Ahorro)" />
                                 </MudItem>
                                 <MudItem xs="12" sm="2">
+                                    <MudTextField @bind-Value="SaldoTotal"
+                                                  Label="Saldo Total"
+                                                  Variant="Variant.Outlined"
+                                                  Margin="Margin.Dense"
+                                                  Adornment="Adornment.Start"
+                                                  AdornmentIcon="@Icons.Material.Filled.MoneyOff"
+                                                  ReadOnly="true"
+                                                  For="@(() => SaldoTotal)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="2">
                                     <MudButton Variant="Variant.Filled"
                                                Color="Color.Primary"
                                                Size="Size.Small"
@@ -197,11 +207,11 @@
                                 <PropertyColumn CellStyle="white-space: nowrap;"
                                                 HeaderStyle="white-space: nowrap;"
                                                 Property="c => c.Cantidad" Title="Ahorro 🤏"></PropertyColumn>
-                               @*  <TemplateColumn>
+                                <TemplateColumn>
                                     <CellTemplate>
-                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditarDetalleCasa(context.Item))" />
+                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditarAhorro(context.Item))" />
                                     </CellTemplate>
-                                </TemplateColumn> *@
+                                </TemplateColumn>
                             </Columns>
                        </MudDataGrid>
                    </MudCard>

@@ -11,7 +11,7 @@ namespace ProyectoCasa.Components.Pages.Casa
     public partial class Pag_Mo_Casa_Det
     {
 
-        int _saldoTotal;
+        decimal _saldoTotal;
 
         decimal? _ValorAntiguo;
 
@@ -50,6 +50,8 @@ namespace ProyectoCasa.Components.Pages.Casa
                         //_casa.Saldo = insertada.Saldo;
                     }
                 }
+
+                //_det.Fecha.Value.AddDays(1);
 
                 _det.CasaId = _casa.Id;
                 _casa.LstDetalle.Add(_det);
@@ -110,9 +112,9 @@ namespace ProyectoCasa.Components.Pages.Casa
                     _casa.Id = casaEncontrada.Id;
                     _casa.Descripcion = casaEncontrada.Descripcion;
                     _casa.Saldo = casaEncontrada.Saldo;
+                    _casa.Ahorro = casaEncontrada.Ahorro;
 
-                    _casa.SaldoTotal = Convert.ToDecimal(casaEncontrada.Saldo + casaEncontrada.LstAhorros.Sum(a => a.Cantidad));
-
+                    //CARGAR DETALLE DE LA CASA
                     var lstDetalle = await SupabaseClient.From<Mo_Casa_Det>().Where(x => x.CasaId == _casa.Id).Get();
                     if (lstDetalle.Models.Count > 0)
                     {
@@ -123,22 +125,23 @@ namespace ProyectoCasa.Components.Pages.Casa
                         _casa.LstDetalle = new List<Mo_Casa_Det>();
                     }
 
+                    //CARGAR AHORROS DE LA CASA
                     var lstDetalleAhorros = await SupabaseClient.From<Mo_Ahorro>().Where(x => x.CasaId == _casa.Id).Get();
                     if (lstDetalleAhorros.Models.Count > 0)
                     {
                         _casa.LstAhorros = lstDetalleAhorros.Models.ToList();
+                        SaldoTotal = Convert.ToDecimal(_casa.Saldo + _casa.LstAhorros.Sum(a => a.Cantidad));
                     }
                     else
                     {
                         _casa.LstAhorros = new List<Mo_Ahorro>();
                     }
-
-
                 }
                 else
                 {
                     _casa = new();
                     _casa.LstDetalle = new();
+                    _casa.LstAhorros = new();
                 }
 
             }
@@ -160,6 +163,33 @@ namespace ProyectoCasa.Components.Pages.Casa
         //    }
 
         //}
+
+
+        private async Task EditarAhorro(Mo_Ahorro DetAhorro)
+        {
+            _ValorAntiguo = DetAhorro?.Cantidad;
+            //Visible = true;
+            nuevoAhorro = false;
+
+            var parameter = new DialogParameters
+            {
+                ["DetalleAhorro"] = DetAhorro,
+                ["ValorAntiguo"] = _ValorAntiguo,
+                ["NuevoAhorro"] = nuevoAhorro,
+            };
+
+            var options = new DialogOptions { CloseOnEscapeKey = true, };
+
+            var dialog = await DialogService.ShowAsync<Modal_Edicion_Detalle>(string.Empty, parameter, options);
+
+            var res = await dialog.Result;
+            if (!res.Canceled)
+            {
+                await CargarDatos(true);
+                StateHasChanged();
+                //Snackbar.add("¡Datos actualizados con éxito!", Severity.Success);
+            }
+        }
 
         private async Task EditarDetalleCasa(Mo_Casa_Det detSelect)
         {
@@ -257,7 +287,7 @@ namespace ProyectoCasa.Components.Pages.Casa
         //COMPROBAR SI TIENE VALOR Y SI ES MAYOR QUE 0
         public bool esEdicion => _Id.HasValue && _Id.Value > 0;
 
-        public int SaldoTotal
+        public decimal SaldoTotal
         {
             get
             {

@@ -79,9 +79,9 @@ namespace ProyectoCasa.Components.Pages.Facturas
                     _det.Id = idDetalle.Id;
                 }
 
-                //UPDATE SALDO CASA
+                //UPDATE SALDO CASA MIENTRAS NO SEA DE TIPO AHORRO
                 var casa = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == _facturaCab.CasaId).Single();
-                if (casa != null)
+                if (casa != null && _facturaCab.TipoFactura != TipoFactura.Ahorro)
                 {
                     casa.Saldo -= _det.Total;
 

@@ -140,6 +140,29 @@
                 </MudGrid>
             </MudItem>
         }
+        
+        @if(NuevoAhorro == false && DetalleAhorro != null)
+        {
+            <MudItem>
+                <MudGrid>
+                    <MudItem xs="12" md="12">
+                        <MudTextField @bind-Value="DetalleAhorro.Descripcion"
+                                      Label="Descripción 📋"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      For="@(() => DetalleAhorro.Descripcion)"
+                                      AutoFocus="true" />
+                    </MudItem>
+                    <MudItem xs="12" md="8">
+                        <MudTextField @bind-Value="DetalleAhorro.Cantidad"
+                                      Label="Cantidad 💶"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      For="@(() => DetalleAhorro.Cantidad)" />
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        }
 
     </DialogContent>
     <DialogActions>
