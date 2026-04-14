@@ -38,27 +38,39 @@
 </div> *@
 
 <MudContainer Style="margin-top: 90px;">
-
     <MudItem xs="12" md="12">
-        <MudPaper Class="mx-auto">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
             <MudText Class="text-center" Typo="Typo.h6">Facturas</MudText>
-        </MudPaper>
+
+            <!-- VARIANT: DEFINE EL ESTILO DEL BOTON-->
+            <MudButton Class="pa-mt-10"
+                       Variant="Variant.Filled" 
+                       EndIcon="@Icons.Material.Filled.Book"
+                       Color="Color.Primary"
+                       OnClick="@(()=> IrANuevaFactura())">¿Nueva Factura!</MudButton>
+        </MudStack>
+    </MudItem>
+    <br/>
+    <MudItem xs="12" md="4">
+        <MudDateRangePicker @ref="_picker"
+                            @bind-Daterange="_dateRange"
+                            PlaceholderStart="Inicio"
+                            PlaceholderEnd="Final"
+                            Label="Seleccione una fecha">
+            <PickerActions>
+                <MudButton OnClick="@(() => _picker.CloseAsync(false))">Cancel</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => CargarDatos())">OK</MudButton>
+            </PickerActions>
+        </MudDateRangePicker>
     </MudItem>
 
-    <MudItem xs="12" md="6">
-        <!-- VARIANT: DEFINE EL ESTILO DEL BOTON-->
-        <MudButton 
-            Variant="Variant.Filled" 
-            EndIcon="@Icons.Material.Filled.Book"
-            Color="Color.Primary"
-            OnClick="@(()=> IrANuevaFactura())">¿Nueva Factura!</MudButton>
-    </MudItem>
     <MudDataGrid Items="@LstFacturasCab"
                  T="Mo_Factura_Cab"
                  Hover
                  Height="500px"
                  FixedHeader
                  Groupable
+                 FilterMode="DataGridFilterMode.ColumnFilterMenu"
                  Hideable="false"
                  ShowMenuIcon="true">
         <Columns>

@@ -58,10 +58,13 @@ namespace ProyectoCasa.Components.Pages.Facturas
             try
             {
                 if (SupabaseClient == null) { errorMensaje = "¡Error de conexión!"; return; }
-
                 if (_det == null || _det != null && string.IsNullOrWhiteSpace(_det.Producto)) { errorMensaje = "¡Datos vacios!"; return; }
 
-                await GuardarFactura();
+                //SI FACTURA ES NUEVA 
+                if (_facturaCab == null || _facturaCab.Id == 0)
+                {
+                    await GuardarFactura();
+                }
 
                 _det.FacturaCabId = _facturaCab.Id;
                 _det.Id_Interno = _facturaCab.LstFactDet.Count + 1;
@@ -88,10 +91,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
                     await SupabaseClient.From<Mo_Casa>().Update(casa);
                 }
 
-                //UPDATE FACTURA CAB
                 await GuardarFactura();
-
-
             }
             catch (Exception ex)
             {
@@ -108,36 +108,25 @@ namespace ProyectoCasa.Components.Pages.Facturas
         //ESTE MÉTODO SE ENCARGA DE MOSTRAR DATOS EN CASO DE QUE ESTEMOS EDITANDO O SI ES UNA NUEVA FACTURA.
         private async Task CargarDatos(bool _esEdicion)
         {
-            //SI ES UNA EDICIÓN
-            if (_esEdicion)
+            //SI NO ES UNA EDICIÓN
+            if (!_esEdicion)
             {
-                //BUSCAMOS LA FACTURA Y CARGAMOS SUS DATOS
-                var facturaActual = await SupabaseClient.From<Mo_Factura_Cab>().Where(x => x.Id == _Id).Single();
-                if (facturaActual != null)
-                {
-                    _facturaCab.Id = facturaActual.Id;
-                    _facturaCab.Descripcion = facturaActual.Descripcion;
-                    _facturaCab.Fecha = facturaActual.Fecha;
-                    _facturaCab.CasaId = facturaActual.CasaId;
-                    _facturaCab.TotalGastado = facturaActual.TotalGastado;
-                    _facturaCab.TipoFactura = facturaActual.TipoFactura;
+                return;
+            }
 
-                    //COMPROBAMOS SI TIENE DETALLES.
-                    var detalleFactura = await SupabaseClient.From<Mo_Factura_Det>().Where(x => x.FacturaCabId == _facturaCab.Id).Get();
+            //SI ES UNA EDICIÓN
+            //BUSCAMOS LA FACTURA Y CARGAMOS SUS DATOS
+            var facturaActual = await SupabaseClient.From<Mo_Factura_Cab>().Where(x => x.Id == _Id).Single();
+            if (facturaActual != null)
+            {
+                _facturaCab = facturaActual;
 
-                    if (detalleFactura.Models.Any())
-                    {
-                        _facturaCab.LstFactDet = detalleFactura.Models.ToList();
-                    }
-                    else
-                    {
-                        _facturaCab.LstFactDet = new List<Mo_Factura_Det>();
-                    }
-                }
-                else
+                //COMPROBAMOS SI TIENE DETALLES.
+                var detalleFactura = await SupabaseClient.From<Mo_Factura_Det>().Where(x => x.FacturaCabId == _facturaCab.Id).Get();
+
+                if (detalleFactura.Models.Any())
                 {
-                    _facturaCab = new Mo_Factura_Cab();
-                    _facturaCab.LstFactDet = new List<Mo_Factura_Det>();
+                    _facturaCab.LstFactDet = detalleFactura.Models.ToList();
                 }
             }
         }
