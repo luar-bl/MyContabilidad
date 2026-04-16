@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 using ProyectoCasa.Components;
@@ -26,6 +27,7 @@ var supabaseKey = builder.Configuration["Supabase:Key"];
 
 // 1. Herramientas base
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddCascadingAuthenticationState();
 
 // 2. Configuración de Supabase (Primero las opciones)
@@ -36,7 +38,7 @@ var supabaseOptions = new SupabaseOptions
     // Nota: Si tu versión no tiene PersistSession, lo gestionaremos con el Provider
 };
 
-// 3. Cliente de Supabase (¡SCOPED, no Singleton!) 🚨
+// 3. Cliente de Supabase
 builder.Services.AddScoped<Supabase.Client>(sp =>
     new Supabase.Client(supabaseUrl, supabaseKey, supabaseOptions));
 
@@ -73,7 +75,8 @@ var localizationOptions = new RequestLocalizationOptions()
     .AddSupportedCultures(supportedCultures)
     .AddSupportedUICultures(supportedCultures);
 
-builder.Services.Configure<RequestLocalizationOptions>(options => {
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
     options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("es-ES");
     options.SupportedCultures = supportedCultures.Select(c => new System.Globalization.CultureInfo(c)).ToList();
     options.SupportedUICultures = supportedCultures.Select(c => new System.Globalization.CultureInfo(c)).ToList();

@@ -29,11 +29,13 @@
                 <MudItem xs="12">
                     <MudCard Elevation="1">
                         <MudCardContent>
-                            <MudGrid>
+                            <MudText Typo="Typo.h6">Datos cabecera</MudText>
+                            <MudGrid Justify="Justify.SpaceBetween">
                                 @* Dividimos los campos en columnas para que no ocupen todo el ancho en PC *@
                                 <MudItem xs="12" sm="3">
                                     <MudTextField @bind-Value="_casa.Descripcion"
                                                   Label="Descripción 📋"
+                                                  Clearable="true"
                                                   Variant="Variant.Outlined"
                                                   Margin="Margin.Dense"
                                                   For="@(() => _casa.Descripcion)" />
@@ -89,8 +91,8 @@
         <MudContainer Class="pt-10">
             <MudItem xs="12">
                 <MudCard Elevation="1">
-                    <MudText Typo="Typo.h6">Añadir Detalle</MudText>
                     <MudCardContent>
+                        <MudText Typo="Typo.h6">Añadir Detalle</MudText>
                         <MudGrid>
                             @* Dividimos los campos en columnas para que no ocupen todo el ancho en PC *@
                             <MudItem xs="12" sm="2">

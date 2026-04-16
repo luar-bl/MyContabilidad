@@ -17,10 +17,23 @@
             <MudGrid>
 
                 <MudItem xs="12" md="12">
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd">
+                        <MudButton Color="Color.Primary" 
+                            Variant="Variant.Filled" 
+                            OnClick="NuevaFactura">¡Nueva Factura!</MudButton>
+
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Success"
+                                   EndIcon="@Icons.Material.Filled.Save"
+                                   OnClick="GuardarFactura">¡Guardar Factura!</MudButton>
+                    </MudStack>
+                </MudItem>
+
+                @* <MudItem xs="12" md="12">
                     <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
                         <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="NuevaFactura">¡Nueva Factura!</MudButton>
                     </MudButtonGroup>
-                </MudItem>
+                </MudItem> *@
 
                 <MudItem sm="12" md="12">
                 @if (!string.IsNullOrWhiteSpace(errorMensaje))
@@ -44,6 +57,7 @@
                                   Label="Descripción 📋"
                                   Variant="Variant.Outlined"
                                   Margin="Margin.Normal"
+                                  Clearable="true"
                                   For="@(() => _facturaCab.Descripcion)" />
                     <MudTextField @bind-Value="_facturaCab.Fecha"
                                   Label="Fecha 📅"
@@ -59,7 +73,10 @@
                 </MudItem>
                 <MudItem xs="12" md="5">
                     <MudStack Class="justify-space-between mud-width-full">
-                        <MudSelect @bind-Value="_facturaCab.CasaId" Label="¿A que casa? 🏠">
+                        <MudSelect @bind-Value="_facturaCab.CasaId" 
+                                   Variant="Variant.Outlined"
+                                   Margin="Margin.Normal"
+                                   Label="¿A que casa? 🏠">
                             @foreach (Mo_Casa casa in MostrarDatosCasas())
                             {
                                 <MudSelectItem Value="casa.Id">@casa.Descripcion</MudSelectItem>
@@ -67,38 +84,37 @@
                         </MudSelect>
                     </MudStack>
                     <MudStack Class="justify-space-between mud-width-full">
-                        <MudSelect @bind-Value="_facturaCab.TipoFactura" Label="Tipo de factura 🧾">
+                        <MudSelect @bind-Value="_facturaCab.TipoFactura"
+                                   Variant="Variant.Outlined"
+                                   Margin="Margin.Normal" 
+                                   Label="Tipo de factura 🧾">
                             @foreach (var tipoFact in Enum.GetValues<TipoFactura>().ToList())
                             {
                                 <MudSelectItem Value="tipoFact">@tipoFact</MudSelectItem>
                             }
                         </MudSelect>
                     </MudStack>
-                    <MudItem Class="pa-mt-10">
-                        <MudButton 
-                                   Variant="Variant.Outlined" 
-                                   Color="Color.Primary"
-                                   EndIcon="@Icons.Material.Filled.Save"
-                                   OnClick="GuardarFactura">¡Guardar Factura!</MudButton>
-                    </MudItem>
+                   
                    
                 </MudItem>
 
+                @*CABECERA SUB-DETALLE*@
                 <MudItem xs="12" md="3">
                     <MudTextField @bind-Value="_det.Producto"
                                   Label="Producto 📦"
+                                  Clearable="true"
                                   Variant="Variant.Outlined"
                                   Margin="Margin.Normal"
                                   For="@(() => _det.Producto)" />
                 </MudItem>
-                <MudItem xs="12" md="3">
+                <MudItem xs="12" md="1">
                     <MudTextField @bind-Value="_det.Cantidad"
                                   Label="Cantidad 🤏"
                                   Variant="Variant.Outlined"
                                   Margin="Margin.Normal"
                                   For="@(() => _det.Cantidad)" />
                 </MudItem>
-                <MudItem xs="12" md="3">
+                <MudItem xs="12" md="1">
                     <MudTextField @bind-Value="_det.Precio"
                                   Label="Precio 💲"
                                   Variant="Variant.Outlined"
@@ -114,7 +130,7 @@
                
 
                 @* -- ESTRUCTURA DE TABLA -- *@
-                <MudItem xs="12" md="12">
+                <MudItem xs="12">
                     <MudCard>
                         <MudCardContent>
                             <MudDataGrid Items="@MostrarDetalle()"
@@ -122,8 +138,6 @@
                                          Hover
                                          Height="300px"
                                          FixedHeader
-                                         Groupable
-                                         Hideable="false"
                                          ShowMenuIcon="true">
                                          <Columns>
                                                <PropertyColumn Property="x => x.Id" Title="Id 🏴" />
@@ -139,11 +153,7 @@
                                                 <TemplateColumn>
                                                     <CellTemplate>
                                                         <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => Eliminar(context.Item))"/>
-                                                    </CellTemplate>
-                                                </TemplateColumn>
-                                                <TemplateColumn>
-                                                    <CellTemplate>
-                                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="@(() => Editar(context.Item))"/>
+                                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="@(() => Editar(context.Item))" />
                                                     </CellTemplate>
                                                 </TemplateColumn>
                                          </Columns>

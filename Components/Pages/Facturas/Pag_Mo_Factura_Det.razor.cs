@@ -187,6 +187,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
                 var fact = res.Models.FirstOrDefault();
                 if (fact != null)
                 {
+                    _facturaCab.Fecha = _facturaCab.Fecha.AddDays(1);
                     _facturaCab.Id = fact.Id;
                     _facturaCab.Descripcion = fact.Descripcion;
                     _facturaCab.Fecha = Convert.ToDateTime(fact.Fecha.ToString("dd/MM/yyyy"));
@@ -197,6 +198,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
             }
             else
             {
+                _facturaCab.Fecha = _facturaCab.Fecha.AddDays(1);
                 await SupabaseClient.From<Mo_Factura_Cab>().Update(_facturaCab);
             }
 

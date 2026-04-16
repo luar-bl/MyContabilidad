@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
@@ -11,14 +12,20 @@ namespace ProyectoCasa.Service
 {
     public class ServicioBlanco
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        //private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILocalStorageService _localStorage;
+        private readonly ISessionStorageService _sessionStorage;
         private readonly Supabase.Client _supabaseClient;
 
-        public ServicioBlanco(Supabase.Client supabaseClient, ILocalStorageService localStorage)
+        //public ServicioBlanco(Supabase.Client supabaseClient, ILocalStorageService localStorage)
+        //{
+        //    _supabaseClient = supabaseClient;
+        //    _localStorage = localStorage;
+        //}
+        public ServicioBlanco(Supabase.Client supabaseClient, ISessionStorageService sessionStorage)
         {
             _supabaseClient = supabaseClient;
-            _localStorage = localStorage;
+            _sessionStorage = sessionStorage;
         }
 
         public async Task<string> HandleLogin(Mo_Sesion login, AuthenticationStateProvider authProvider)
@@ -31,7 +38,7 @@ namespace ProyectoCasa.Service
                     return "Usuario o contraseña incorrectos";
 
                 // Guardamos la sesión en LocalStorage
-                await _localStorage.SetItemAsync("supabase_session", response);
+                await _sessionStorage.SetItemAsync("supabase_session", response);
 
                 // Notificamos a Blazor que el estado de autenticación cambió
                 if (authProvider is SupabaseAuthStateProvider custom)
