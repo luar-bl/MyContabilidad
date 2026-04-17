@@ -119,6 +119,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
             var facturaActual = await SupabaseClient.From<Mo_Factura_Cab>().Where(x => x.Id == _Id).Single();
             if (facturaActual != null)
             {
+                _facturaCab.Fecha = DateTime.SpecifyKind(facturaActual.Fecha, DateTimeKind.Utc);
                 _facturaCab = facturaActual;
 
                 //COMPROBAMOS SI TIENE DETALLES.
@@ -181,16 +182,18 @@ namespace ProyectoCasa.Components.Pages.Facturas
             //CREAMOS LA CABECERA SI NO EXISTE
             if (_facturaCab.Id == 0)
             {
+                _facturaCab.Fecha = DateTime.SpecifyKind(_facturaCab.Fecha, DateTimeKind.Utc);
                 //HACEMOS UN INSERT EN LA CABECERA PARA LUEGO OBTENER EL ID QUE NOS GENERA LA BASE DE DATOS PARA PODER ASIGNAR EL VALOR A SUS DETALLES
                 var res = await SupabaseClient.From<Mo_Factura_Cab>().Insert(_facturaCab);
 
                 var fact = res.Models.FirstOrDefault();
                 if (fact != null)
                 {
-                    _facturaCab.Fecha = _facturaCab.Fecha.AddDays(1);
+                    //_facturaCab.Fecha = _facturaCab.Fecha.AddDays(1);
                     _facturaCab.Id = fact.Id;
                     _facturaCab.Descripcion = fact.Descripcion;
-                    _facturaCab.Fecha = Convert.ToDateTime(fact.Fecha.ToString("dd/MM/yyyy"));
+                    _facturaCab.Fecha = DateTime.SpecifyKind(_facturaCab.Fecha, DateTimeKind.Utc);
+                    //_facturaCab.Fecha = Convert.ToDateTime(fact.Fecha.ToString("dd/MM/yyyy"));
                     _facturaCab.TipoFactura = fact.TipoFactura;
                     _facturaCab.CasaId = fact.CasaId;
                     _facturaCab.TotalGastado = fact.TotalGastado;
@@ -198,7 +201,8 @@ namespace ProyectoCasa.Components.Pages.Facturas
             }
             else
             {
-                _facturaCab.Fecha = _facturaCab.Fecha.AddDays(1);
+                //_facturaCab.Fecha = _facturaCab.Fecha.AddDays(1);
+                _facturaCab.Fecha = DateTime.SpecifyKind(_facturaCab.Fecha, DateTimeKind.Utc);
                 await SupabaseClient.From<Mo_Factura_Cab>().Update(_facturaCab);
             }
 

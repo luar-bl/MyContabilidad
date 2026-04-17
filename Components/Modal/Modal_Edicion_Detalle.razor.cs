@@ -28,6 +28,8 @@ namespace ProyectoCasa.Components.Modal
                     return;
                 }
 
+                DetalleCasa.Fecha = DateTime.SpecifyKind(Convert.ToDateTime(DetalleCasa.Fecha), DateTimeKind.Utc);
+
                 //ACTUALIZO EL DETALLE
                 await SupabaseClient.From<Mo_Casa_Det>().Update(DetalleCasa);
 
@@ -105,7 +107,8 @@ namespace ProyectoCasa.Components.Modal
 
                 Mo_Factura_Cab facturaAhorro = new Mo_Factura_Cab();
                 facturaAhorro.Descripcion = $"Ahorro casa {casaActual.Descripcion}";
-                facturaAhorro.Fecha = DateTime.Today;
+                //facturaAhorro.Fecha = DateTime.Today;
+                facturaAhorro.Fecha = DateTime.SpecifyKind(facturaAhorro.Fecha, DateTimeKind.Utc);
                 facturaAhorro.CasaId = casaActual.Id;
                 facturaAhorro.TipoFactura = TipoFactura.Ahorro;
                 facturaAhorro.AhorroId = ahorroGuardado.Id;
@@ -140,8 +143,8 @@ namespace ProyectoCasa.Components.Modal
                 {
 
                     decimal diferencia = Convert.ToDecimal(DetalleAhorro.Cantidad - ValorAntiguo);
-                    casa.Ahorro += Convert.ToDecimal(diferencia);
-                    casa.Saldo -= diferencia;
+                    casa.Ahorro += Convert.ToDecimal(diferencia); // - + = -$    // + + = +$
+                    casa.Saldo -= diferencia; // si la diferencia sale negativo - - = +$
                     //ACTUALIZO LA CABECERA
                     await SupabaseClient.From<Mo_Casa>().Update(casa);
                 }

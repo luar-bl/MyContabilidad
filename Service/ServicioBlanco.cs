@@ -13,7 +13,7 @@ namespace ProyectoCasa.Service
     public class ServicioBlanco
     {
         //private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILocalStorageService _localStorage;
+        //private readonly ILocalStorageService _localStorage;
         private readonly ISessionStorageService _sessionStorage;
         private readonly Supabase.Client _supabaseClient;
 
