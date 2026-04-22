@@ -3,7 +3,11 @@ using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 using ProyectoCasa.Components;
+using ProyectoCasa.Repositorio.FacturaCab;
+using ProyectoCasa.Repositorio.FacturaDet;
 using ProyectoCasa.Service;
+using ProyectoCasa.Service.FacturaCab;
+using ProyectoCasa.Service.FacturaDet;
 using Supabase;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,7 +49,15 @@ builder.Services.AddScoped<Supabase.Client>(sp =>
 // 4. Tu lógica de negocio y seguridad
 builder.Services.AddScoped<SupabaseAuthStateProvider>(); // Lo registramos como su clase
 builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<SupabaseAuthStateProvider>());
+
+//SERVICIOS
 builder.Services.AddScoped<ServicioBlanco>();
+builder.Services.AddScoped<ServicioFacturaDet>();
+builder.Services.AddScoped<ServicioFacturaCab>();
+
+//REPOSITORIOS
+builder.Services.AddScoped<RepositorioFacturaDet>();
+builder.Services.AddScoped<RepositorioFacturaCab>();
 
 // 5. Autenticación y Cookies (Antes de los componentes)
 builder.Services.AddAuthentication("SupabaseAuth")

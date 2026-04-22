@@ -1,17 +1,22 @@
 ﻿
 using MudBlazor;
 using ProyectoCasa.Model.Factura;
+using ProyectoCasa.Service.FacturaCab;
 using static MudBlazor.CategoryTypes;
 
 namespace ProyectoCasa.Components.Pages.Facturas
 {
     public partial class Pag_Mo_Factura_Cab
     {
+        private readonly ServicioFacturaCab _servicioFactCab;
 
         //public List<Mo_Factura_Cab> LstFacturasCab = new List<Mo_Factura_Cab>();
-        public List<Mo_Factura_Cab> LstFacturasCab = new List<Mo_Factura_Cab>();
+        List<Mo_Factura_Cab> LstFacturasCab = new List<Mo_Factura_Cab>();
 
-        public Pag_Mo_Factura_Cab() { }
+        public Pag_Mo_Factura_Cab(ServicioFacturaCab servFactCab)
+        {
+            _servicioFactCab = servFactCab;
+        }
 
         private async Task CargarDatos()
         {
@@ -26,15 +31,17 @@ namespace ProyectoCasa.Components.Pages.Facturas
                     await _picker.CloseAsync();
                 }
 
-                var res = await SupabaseClient.From<Mo_Factura_Cab>().Get();
-                if (res != null && res.Models != null && res.Models.Any())
-                {
-                    //LstFacturasCab = res.Models.OrderBy(x => x.Id).ToList();
-                    LstFacturasCab = res.Models.Where(s => s.Fecha >= nuevaFechaDesde &&
-                                                           s.Fecha <= nuevaFechaHasta)
-                                                .OrderBy(x => x.Id)
-                                                .ToList();
-                }
+                LstFacturasCab = await _servicioFactCab.ListaFacturas(nuevaFechaDesde, nuevaFechaHasta);
+
+                //var res = await SupabaseClient.From<Mo_Factura_Cab>().Get();
+                //if (res != null && res.Models != null && res.Models.Any())
+                //{
+                //    //LstFacturasCab = res.Models.OrderBy(x => x.Id).ToList();
+                //    LstFacturasCab = res.Models.Where(s => s.Fecha >= nuevaFechaDesde &&
+                //                                           s.Fecha <= nuevaFechaHasta)
+                //                                .OrderBy(x => x.Id)
+                //                                .ToList();
+                //}
             }
             catch (Exception)
             {
@@ -44,12 +51,14 @@ namespace ProyectoCasa.Components.Pages.Facturas
 
         private void EditarFactura(long id)
         {
-            Navigation.NavigateTo($"/factura/Mo_Factura_Det/{id}");
+            //Navigation.NavigateTo($"/factura/Mo_Factura_Det/{id}");
+            _servicioFactCab.EditarFactura(id);
         }
 
         private void IrANuevaFactura()
         {
-            Navigation.NavigateTo("/factura/Mo_Factura_Det");
+            //Navigation.NavigateTo("/factura/Mo_Factura_Det");
+            _servicioFactCab.IrANuevaFactura();
         }
 
         protected override async Task OnInitializedAsync()
