@@ -2,7 +2,7 @@
 using ProyectoCasa.Model.Factura;
 using Supabase.Interfaces;
 
-namespace ProyectoCasa.Repositorio.FacturaDet
+namespace ProyectoCasa.Repositorio.Facturas.FacturaDet
 {
     public class RepositorioFacturaDet
     {
@@ -25,6 +25,12 @@ namespace ProyectoCasa.Repositorio.FacturaDet
 
         }
 
+        public async Task ActualizarFacturaDet(Mo_Factura_Det facturaDet)
+        {
+            await _supabaseClient.From<Mo_Factura_Det>().Update(facturaDet);
+
+        }
+
         public async Task AgregarDetalle(Mo_Factura_Det detalle)
         {
             await _supabaseClient.From<Mo_Factura_Det>().Insert(detalle);
@@ -35,6 +41,11 @@ namespace ProyectoCasa.Repositorio.FacturaDet
             await _supabaseClient.From<Mo_Factura_Det>().Delete(detalle);
         }
 
+        /// <summary>
+        /// MÉTODO PARA FACTURAS QUE SON NUEVAS.
+        /// </summary>
+        /// <param name="facturaCab"></param>
+        /// <returns></returns>
         public async Task<Mo_Factura_Cab> GuardarFacturaCab(Mo_Factura_Cab facturaCab)
         {
             var res = await _supabaseClient.From<Mo_Factura_Cab>().Insert(facturaCab);

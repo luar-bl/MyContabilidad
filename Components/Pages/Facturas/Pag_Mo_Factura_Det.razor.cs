@@ -4,7 +4,7 @@ using MudBlazor;
 using ProyectoCasa.Components.Modal;
 using ProyectoCasa.Model.Casa;
 using ProyectoCasa.Model.Factura;
-using ProyectoCasa.Service.FacturaDet;
+using ProyectoCasa.Service.Facturas.FacturaDet;
 
 namespace ProyectoCasa.Components.Pages.Facturas
 {
@@ -173,8 +173,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
 
         }
 
-        //ESTE MÉTODO GUARDA LA FACTURA Y OBTENEMOS EL ID QUE HA CREADO LA BBDD, YA QUE SE LO TENEMOS QUE ASIGNAR AL DETALLE 'MASTER OBJECT - DETAIL'
-        //" -- TODO HIJO PERTENECE A UN PADRE -- ".
+        //MÉTODO PARA BTN DE GUARDAR FACTURA
         private async Task GuardarFactura()
         {
             #region -- Código Comentado -- 

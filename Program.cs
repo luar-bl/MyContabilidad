@@ -3,11 +3,17 @@ using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 using ProyectoCasa.Components;
-using ProyectoCasa.Repositorio.FacturaCab;
-using ProyectoCasa.Repositorio.FacturaDet;
+using ProyectoCasa.Repositorio.Ahorro;
+using ProyectoCasa.Repositorio.Casas.CasaCab;
+using ProyectoCasa.Repositorio.Casas.CasaDet;
+using ProyectoCasa.Repositorio.Facturas.FacturaCab;
+using ProyectoCasa.Repositorio.Facturas.FacturaDet;
 using ProyectoCasa.Service;
-using ProyectoCasa.Service.FacturaCab;
-using ProyectoCasa.Service.FacturaDet;
+using ProyectoCasa.Service.Ahorro;
+using ProyectoCasa.Service.Casas.CasaCab;
+using ProyectoCasa.Service.Casas.CasaDet;
+using ProyectoCasa.Service.Facturas.FacturaCab;
+using ProyectoCasa.Service.Facturas.FacturaDet;
 using Supabase;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -54,10 +60,16 @@ builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredServ
 builder.Services.AddScoped<ServicioBlanco>();
 builder.Services.AddScoped<ServicioFacturaDet>();
 builder.Services.AddScoped<ServicioFacturaCab>();
+builder.Services.AddScoped<ServicioCasaCab>();
+builder.Services.AddScoped<ServicioCasaDet>();
+builder.Services.AddScoped<ServicioAhorro>();
 
 //REPOSITORIOS
 builder.Services.AddScoped<RepositorioFacturaDet>();
 builder.Services.AddScoped<RepositorioFacturaCab>();
+builder.Services.AddScoped<RepositorioCasaCab>();
+builder.Services.AddScoped<RepositorioCasaDet>();
+builder.Services.AddScoped<RepositorioAhorro>();
 
 // 5. Autenticación y Cookies (Antes de los componentes)
 builder.Services.AddAuthentication("SupabaseAuth")

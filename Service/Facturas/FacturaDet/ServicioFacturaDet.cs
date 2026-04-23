@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MudBlazor;
 using ProyectoCasa.Model.Casa;
 using ProyectoCasa.Model.Factura;
-using ProyectoCasa.Repositorio.FacturaDet;
+using ProyectoCasa.Repositorio.Facturas.FacturaDet;
 
-namespace ProyectoCasa.Service.FacturaDet
+namespace ProyectoCasa.Service.Facturas.FacturaDet
 {
     public class ServicioFacturaDet
     {
@@ -124,6 +124,13 @@ namespace ProyectoCasa.Service.FacturaDet
             }
         }
 
+
+        /// <summary>
+        /// SE UTILIZA CUANDO CREAMOS HACEMOS CLICK EN EL BOTÓN EN NUEVA FACTURA
+        /// SE UTILIZA PARA EL BOTÓN DE GUARDAR CAMBIOS
+        /// </summary>
+        /// <param name="facturaCab"></param>
+        /// <returns></returns>
         public async Task<Mo_Factura_Cab> GuardarFacturaCabecera(Mo_Factura_Cab facturaCab)
         {
             if (string.IsNullOrWhiteSpace(facturaCab.Descripcion))

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MudBlazor;
 using ProyectoCasa.Model.Ahorro;
 using ProyectoCasa.Model.Factura;
-using ProyectoCasa.Repositorio.FacturaCab;
+using ProyectoCasa.Repositorio.Facturas.FacturaCab;
 
-namespace ProyectoCasa.Service.FacturaCab
+namespace ProyectoCasa.Service.Facturas.FacturaCab
 {
     public class ServicioFacturaCab
     {

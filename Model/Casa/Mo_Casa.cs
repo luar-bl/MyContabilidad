@@ -14,10 +14,10 @@ namespace ProyectoCasa.Model.Casa
 
 
         [IgnoreDataMember]
-        public List<Mo_Casa_Det> LstDetalle { get; set; }
+        public List<Mo_Casa_Det> LstDetalle { get; set; } = new List<Mo_Casa_Det>();
 
         [IgnoreDataMember]
-        public List<Mo_Ahorro> LstAhorros { get; set; }
+        public List<Mo_Ahorro> LstAhorros { get; set; } = new List<Mo_Ahorro>();
 
         [PrimaryKey("id", false)]
         public long Id { get; set; }

@@ -1,6 +1,6 @@
 ﻿using ProyectoCasa.Model.Factura;
 
-namespace ProyectoCasa.Repositorio.FacturaCab
+namespace ProyectoCasa.Repositorio.Facturas.FacturaCab
 {
     public class RepositorioFacturaCab
     {

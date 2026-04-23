@@ -6,12 +6,16 @@ using ProyectoCasa.Components.Pages.Facturas;
 using ProyectoCasa.Model.Ahorro;
 using ProyectoCasa.Model.Casa;
 using ProyectoCasa.Model.Factura;
+using ProyectoCasa.Service.Ahorro;
+using ProyectoCasa.Service.Casas.CasaDet;
 using System.Security.Cryptography;
 
 namespace ProyectoCasa.Components.Modal
 {
     public partial class Modal_Edicion_Detalle
     {
+
+
 
         private async Task Cerrar()
         {
@@ -22,29 +26,31 @@ namespace ProyectoCasa.Components.Modal
         {
             if (DetalleCasa != null)
             {
+                #region -- Código Comentado --
+                //if (DetalleCasa.Cantidad <= 0)
+                //{
+                //    return;
+                //}
 
-                if (DetalleCasa.Cantidad <= 0)
-                {
-                    return;
-                }
+                //DetalleCasa.Fecha = DateTime.SpecifyKind(Convert.ToDateTime(DetalleCasa.Fecha), DateTimeKind.Utc);
 
-                DetalleCasa.Fecha = DateTime.SpecifyKind(Convert.ToDateTime(DetalleCasa.Fecha), DateTimeKind.Utc);
+                ////ACTUALIZO EL DETALLE
+                //await SupabaseClient.From<Mo_Casa_Det>().Update(DetalleCasa);
 
-                //ACTUALIZO EL DETALLE
-                await SupabaseClient.From<Mo_Casa_Det>().Update(DetalleCasa);
+                ////OBTENO LA CASA
+                //var casa = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == DetalleCasa.CasaId).Single();
+                //if (casa != null)
+                //{
+                //    decimal diferencia = Convert.ToDecimal(DetalleCasa.Cantidad - ValorAntiguo);
 
-                //OBTENO LA CASA
-                var casa = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == DetalleCasa.CasaId).Single();
-                if (casa != null)
-                {
-                    decimal diferencia = Convert.ToDecimal(DetalleCasa.Cantidad - ValorAntiguo);
-
-                    casa.Saldo += Convert.ToDecimal(diferencia);
+                //    casa.Saldo += Convert.ToDecimal(diferencia);
 
 
-                    //ACTUALIZO LA CABECERA
-                    await SupabaseClient.From<Mo_Casa>().Update(casa);
-                }
+                //    //ACTUALIZO LA CABECERA
+                //    await SupabaseClient.From<Mo_Casa>().Update(casa);
+                //}
+                #endregion
+                await _servicioCasaDetalle.EditarLineaDetalleCasa(DetalleCasa, ValorAntiguo);
             }
 
             if (DetalleFactura != null)
@@ -87,81 +93,90 @@ namespace ProyectoCasa.Components.Modal
 
             if (NuevoAhorro == true)
             {
-                if (string.IsNullOrWhiteSpace(DetalleAhorro.Descripcion) || DetalleAhorro.Cantidad <= 0) { return; }
-                DetalleAhorro.CasaId = IdCasa;
+                await _servicioAhorro.NuevoAhorroDetalle(DetalleAhorro, IdCasa);
+                #region -- Código Comentado --
 
-                var casaActual = await SupabaseClient.From<Mo_Casa>().Where(c => c.Id == IdCasa).Single();
-                if (casaActual == null)
-                {
-                    return;
-                }
+                //if (string.IsNullOrWhiteSpace(DetalleAhorro.Descripcion) || DetalleAhorro.Cantidad <= 0) { return; }
+                //DetalleAhorro.CasaId = IdCasa;
 
-                casaActual.Ahorro += Convert.ToDecimal(DetalleAhorro.Cantidad);
-                casaActual.Saldo -= Convert.ToDecimal(DetalleAhorro.Cantidad);
+                //var casaActual = await SupabaseClient.From<Mo_Casa>().Where(c => c.Id == IdCasa).Single();
+                //if (casaActual == null)
+                //{
+                //    return;
+                //}
 
-                var guardarAhorro = await SupabaseClient.From<Mo_Ahorro>().Insert(DetalleAhorro);
-                var ahorroGuardado = guardarAhorro.Models.FirstOrDefault() ?? null;
+                //casaActual.Ahorro += Convert.ToDecimal(DetalleAhorro.Cantidad);
+                //casaActual.Saldo -= Convert.ToDecimal(DetalleAhorro.Cantidad);
 
-
-                await SupabaseClient.From<Mo_Casa>().Update(casaActual);
-
-                Mo_Factura_Cab facturaAhorro = new Mo_Factura_Cab();
-                facturaAhorro.Descripcion = $"Ahorro casa {casaActual.Descripcion}";
-                //facturaAhorro.Fecha = DateTime.Today;
-                facturaAhorro.Fecha = DateTime.SpecifyKind(facturaAhorro.Fecha, DateTimeKind.Utc);
-                facturaAhorro.CasaId = casaActual.Id;
-                facturaAhorro.TipoFactura = TipoFactura.Ahorro;
-                facturaAhorro.AhorroId = ahorroGuardado.Id;
-
-                var guardarFactura = await SupabaseClient.From<Mo_Factura_Cab>().Insert(facturaAhorro);
-                var obtenerFacturaNueva = guardarFactura.Models.FirstOrDefault() ?? null;
-                if (obtenerFacturaNueva == null) { return; }
+                //var guardarAhorro = await SupabaseClient.From<Mo_Ahorro>().Insert(DetalleAhorro);
+                //var ahorroGuardado = guardarAhorro.Models.FirstOrDefault() ?? null;
 
 
-                Mo_Factura_Det detalleFactura = new Mo_Factura_Det();
-                detalleFactura.FacturaCabId = obtenerFacturaNueva.Id;
-                detalleFactura.Cantidad = 1;
-                detalleFactura.Producto = "Ahorro";
-                detalleFactura.Precio = Convert.ToDecimal(DetalleAhorro.Cantidad);
-                detalleFactura.Total = Convert.ToDecimal(DetalleAhorro.Cantidad * detalleFactura.Cantidad);
+                //await SupabaseClient.From<Mo_Casa>().Update(casaActual);
 
-                obtenerFacturaNueva.TotalGastado = detalleFactura.Total;
+                //Mo_Factura_Cab facturaAhorro = new Mo_Factura_Cab();
+                //facturaAhorro.Descripcion = $"Ahorro casa {casaActual.Descripcion}";
+                ////facturaAhorro.Fecha = DateTime.Today;
+                //facturaAhorro.Fecha = DateTime.SpecifyKind(facturaAhorro.Fecha, DateTimeKind.Utc);
+                //facturaAhorro.CasaId = casaActual.Id;
+                //facturaAhorro.TipoFactura = TipoFactura.Ahorro;
+                //facturaAhorro.AhorroId = ahorroGuardado.Id;
 
-                await SupabaseClient.From<Mo_Factura_Det>().Insert(detalleFactura);
+                //var guardarFactura = await SupabaseClient.From<Mo_Factura_Cab>().Insert(facturaAhorro);
+                //var obtenerFacturaNueva = guardarFactura.Models.FirstOrDefault() ?? null;
+                //if (obtenerFacturaNueva == null) { return; }
+
+
+                //Mo_Factura_Det detalleFactura = new Mo_Factura_Det();
+                //detalleFactura.FacturaCabId = obtenerFacturaNueva.Id;
+                //detalleFactura.Cantidad = 1;
+                //detalleFactura.Producto = "Ahorro";
+                //detalleFactura.Precio = Convert.ToDecimal(DetalleAhorro.Cantidad);
+                //detalleFactura.Total = Convert.ToDecimal(DetalleAhorro.Cantidad * detalleFactura.Cantidad);
+
+                //obtenerFacturaNueva.TotalGastado = detalleFactura.Total;
+
+                //await SupabaseClient.From<Mo_Factura_Det>().Insert(detalleFactura);
+                #endregion
+
             }
             else if (DetalleAhorro != null && NuevoAhorro == false)
             {
-                if (DetalleAhorro.Cantidad <= 0) { return; }
+                await _servicioAhorro.EditarLineaAhorroDetalle(DetalleAhorro, ValorAntiguo);
 
-                //ACTUALIZO EL DETALLE
-                await SupabaseClient.From<Mo_Ahorro>().Update(DetalleAhorro);
+                #region 
+                //if (DetalleAhorro.Cantidad <= 0) { return; }
+
+                ////ACTUALIZO EL DETALLE
+                //await SupabaseClient.From<Mo_Ahorro>().Update(DetalleAhorro);
 
 
-                //OBTENO LA CASA
-                var casa = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == DetalleAhorro.CasaId).Single();
-                if (casa != null)
-                {
+                ////OBTENO LA CASA
+                //var casa = await SupabaseClient.From<Mo_Casa>().Where(x => x.Id == DetalleAhorro.CasaId).Single();
+                //if (casa != null)
+                //{
 
-                    decimal diferencia = Convert.ToDecimal(DetalleAhorro.Cantidad - ValorAntiguo);
-                    casa.Ahorro += Convert.ToDecimal(diferencia); // - + = -$    // + + = +$
-                    casa.Saldo -= diferencia; // si la diferencia sale negativo - - = +$
-                    //ACTUALIZO LA CABECERA
-                    await SupabaseClient.From<Mo_Casa>().Update(casa);
-                }
+                //    decimal diferencia = Convert.ToDecimal(DetalleAhorro.Cantidad - ValorAntiguo);
+                //    casa.Ahorro += Convert.ToDecimal(diferencia); // - + = -$    // + + = +$
+                //    casa.Saldo -= diferencia; // si la diferencia sale negativo - - = +$
+                //    //ACTUALIZO LA CABECERA
+                //    await SupabaseClient.From<Mo_Casa>().Update(casa);
+                //}
 
-                //BUSCAR LA FACTURA Y MODIFICAR EL DETALLE
-                var facturaCab = await SupabaseClient.From<Mo_Factura_Cab>().Where(a => a.AhorroId == DetalleAhorro.Id).Single();
-                if (facturaCab != null)
-                {
-                    var detalle = await SupabaseClient.From<Mo_Factura_Det>().Where(f => f.FacturaCabId == facturaCab.Id).Get();
-                    if (detalle != null && detalle.Models.Any())
-                    {
-                        var res = detalle.Models.FirstOrDefault();
-                        res.Precio = Convert.ToDecimal(DetalleAhorro.Cantidad);
-                        res.Total = res.Precio * res.Cantidad;
-                        await SupabaseClient.From<Mo_Factura_Det>().Update(res);
-                    }
-                }
+                ////BUSCAR LA FACTURA Y MODIFICAR EL DETALLE
+                //var facturaCab = await SupabaseClient.From<Mo_Factura_Cab>().Where(a => a.AhorroId == DetalleAhorro.Id).Single();
+                //if (facturaCab != null)
+                //{
+                //    var detalle = await SupabaseClient.From<Mo_Factura_Det>().Where(f => f.FacturaCabId == facturaCab.Id).Get();
+                //    if (detalle != null && detalle.Models.Any())
+                //    {
+                //        var res = detalle.Models.FirstOrDefault();
+                //        res.Precio = Convert.ToDecimal(DetalleAhorro.Cantidad);
+                //        res.Total = res.Precio * res.Cantidad;
+                //        await SupabaseClient.From<Mo_Factura_Det>().Update(res);
+                //    }
+                //}
+                #endregion
             }
 
 
@@ -170,6 +185,12 @@ namespace ProyectoCasa.Components.Modal
             DetalleAhorro = null;
             await Cerrar();
         }
+
+        [Inject]
+        ServicioAhorro _servicioAhorro { get; set; }
+
+        [Inject]
+        ServicioCasaDet _servicioCasaDetalle { get; set; }
 
         [CascadingParameter]
         private IMudDialogInstance MudDialog { get; set; }

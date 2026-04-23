@@ -134,7 +134,7 @@
                                            Color="Color.Primary"
                                            Size="Size.Small"
                                            Class="ml-auto"
-                                           OnClick="@(() =>Agregar())">¡Añadir Detalle!</MudButton>
+                                           OnClick="@(() =>AgregarDetalleCasa())">¡Añadir Detalle!</MudButton>
                             </MudItem>
                         </MudGrid>
                     </MudCardContent>
@@ -172,7 +172,7 @@
                                                 Property="c => c.Fecha" Title="Fecha📅"></PropertyColumn>
                                 <TemplateColumn>
                                     <CellTemplate>
-                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditarDetalleCasa(context.Item))" />
+                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => AbrorModalEditarDetalleCasa(context.Item))" />
                                     </CellTemplate>
                                 </TemplateColumn>
                             </Columns>
@@ -187,7 +187,7 @@
                                    Color="Color.Primary"
                                    Size="Size.Small"
                                    Class="ml-auto"
-                                   OnClick="@(() =>AgregarAhorro())">¡Añadir Ahorro!</MudButton>
+                                   OnClick="@(() =>AbrirModalAgregarAhorro())">¡Añadir Ahorro!</MudButton>
                    </MudStack>
                </MudItem>
                <MudItem xs="12" md="12">
@@ -211,7 +211,7 @@
                                                 Property="c => c.Cantidad" Title="Ahorro 🤏"></PropertyColumn>
                                 <TemplateColumn>
                                     <CellTemplate>
-                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditarAhorro(context.Item))" />
+                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => AbrirModalEditarAhorro(context.Item))" />
                                     </CellTemplate>
                                 </TemplateColumn>
                             </Columns>

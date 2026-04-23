@@ -1,7 +1,7 @@
 ﻿
 using MudBlazor;
 using ProyectoCasa.Model.Factura;
-using ProyectoCasa.Service.FacturaCab;
+using ProyectoCasa.Service.Facturas.FacturaCab;
 using static MudBlazor.CategoryTypes;
 
 namespace ProyectoCasa.Components.Pages.Facturas
@@ -32,7 +32,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
                 }
 
                 LstFacturasCab = await _servicioFactCab.ListaFacturas(nuevaFechaDesde, nuevaFechaHasta);
-
+                #region -- Código comentado --
                 //var res = await SupabaseClient.From<Mo_Factura_Cab>().Get();
                 //if (res != null && res.Models != null && res.Models.Any())
                 //{
@@ -42,6 +42,7 @@ namespace ProyectoCasa.Components.Pages.Facturas
                 //                                .OrderBy(x => x.Id)
                 //                                .ToList();
                 //}
+                #endregion
             }
             catch (Exception)
             {
