@@ -1,0 +1,10 @@
+﻿@using ProyectoCasa.Components.General
+
+<Menu/>
+
+
+<MudContainer Style="margin-top: 90px;">
+    <MudPaper Class="pa-4">
+        <MudChart T="double" ChartType="MudBlazor.ChartType.Donut" Width="100%" Height="300px" @bind-SelectedIndex="Index" ChartSeries="@([data])" ChartLabels="@labels"></MudChart>
+    </MudPaper>
+</MudContainer>
