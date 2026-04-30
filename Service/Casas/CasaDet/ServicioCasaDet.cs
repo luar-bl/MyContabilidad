@@ -17,14 +17,14 @@ namespace ProyectoCasa.Service.Casas.CasaDet
             _repositorioCasaDet = repositorioCasaDet;
         }
 
-        public async Task AgregarDetalle(Mo_Casa_Det detalle, Mo_Casa casaCab)
+        public async Task<Mo_Casa> AgregarDetalle(Mo_Casa_Det detalle, Mo_Casa casaCab)
         {
             //COMPROBACIÓN DE DATOS
             if (detalle == null ||
                 string.IsNullOrWhiteSpace(detalle.Descripcion) ||
                 detalle.Cantidad <= 0)
             {
-                return;
+                return null;
             }
 
 
@@ -47,6 +47,8 @@ namespace ProyectoCasa.Service.Casas.CasaDet
             casaCab.Saldo += detalle.Cantidad;
             //ACTUALIZAR LOS DATOS DE LA CABECERA
             await _repositorioCasaDet.ActualizarCasa(casaCab);
+
+            return casaCab;
         }
 
         public async Task<Mo_Casa> CargarDatos(bool esEdicion, long? id)

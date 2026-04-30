@@ -5,6 +5,7 @@ using ProyectoCasa.Repositorio.Casas.CasaDet;
 using ProyectoCasa.Repositorio.Facturas.FacturaDet;
 using ProyectoCasa.Service.Casas.CasaDet;
 using ProyectoCasa.Service.Facturas.FacturaDet;
+using static ProyectoCasa.Model.Enumeraciones.Mo_Enumeracions;
 
 namespace ProyectoCasa.Service.Ahorro
 {

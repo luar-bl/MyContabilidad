@@ -4,6 +4,7 @@ using MudBlazor;
 using ProyectoCasa.Model.Casa;
 using ProyectoCasa.Model.Factura;
 using ProyectoCasa.Repositorio.Facturas.FacturaDet;
+using static ProyectoCasa.Model.Enumeraciones.Mo_Enumeracions;
 
 namespace ProyectoCasa.Service.Facturas.FacturaDet
 {

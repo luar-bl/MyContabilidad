@@ -12,5 +12,9 @@
         {
             Navigation.NavigateTo("/factura/Mo_Factura_Cab");
         }
+        private void NavegarAGraficos()
+        {
+            Navigation.NavigateTo("/resumen-graficos");
+        }
     }
 }

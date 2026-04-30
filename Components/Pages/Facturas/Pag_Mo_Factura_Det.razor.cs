@@ -50,6 +50,10 @@ namespace ProyectoCasa.Components.Pages.Facturas
             try
             {
                 _facturaCab = await _servicioFacturaDet.AgregarDetalle(_det, _facturaCab);
+                _Id = _facturaCab.Id;
+                _facturaCab = await _servicioFacturaDet.CargarFacturaEdicion(true, _Id);
+
+                //StateHasChanged();
                 #region -- Código Comentado --
                 //if (SupabaseClient == null) { errorMensaje = "¡Error de conexión!"; return; }
                 //if (_det == null || _det != null && string.IsNullOrWhiteSpace(_det.Producto)) { errorMensaje = "¡Datos vacios!"; return; }

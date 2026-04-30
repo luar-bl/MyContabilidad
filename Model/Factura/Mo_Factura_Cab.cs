@@ -2,6 +2,7 @@
 using Supabase.Postgrest.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using static ProyectoCasa.Model.Enumeraciones.Mo_Enumeracions;
 
 namespace ProyectoCasa.Model.Factura
 {
@@ -36,15 +37,5 @@ namespace ProyectoCasa.Model.Factura
         public TipoFactura TipoFactura { get; set; }
 
     }
-
-    public enum TipoFactura
-    {
-        Suministros = 1,
-        Supermercados = 2,
-        Restaurantes = 3,
-        Ropa = 4,
-        ComprasOnline = 5,
-        Perra = 6,
-        Ahorro = 7
-    }
+   
 }

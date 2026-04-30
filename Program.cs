@@ -6,12 +6,14 @@ using ProyectoCasa.Components;
 using ProyectoCasa.Repositorio.Ahorro;
 using ProyectoCasa.Repositorio.Casas.CasaCab;
 using ProyectoCasa.Repositorio.Casas.CasaDet;
+using ProyectoCasa.Repositorio.Chart;
 using ProyectoCasa.Repositorio.Facturas.FacturaCab;
 using ProyectoCasa.Repositorio.Facturas.FacturaDet;
 using ProyectoCasa.Service;
 using ProyectoCasa.Service.Ahorro;
 using ProyectoCasa.Service.Casas.CasaCab;
 using ProyectoCasa.Service.Casas.CasaDet;
+using ProyectoCasa.Service.Charts;
 using ProyectoCasa.Service.Facturas.FacturaCab;
 using ProyectoCasa.Service.Facturas.FacturaDet;
 using Supabase;
@@ -25,6 +27,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddBlazorBootstrap();
+
+builder.Services.AddServerSideBlazor()
+    .AddCircuitOptions(x => x.DetailedErrors = true);
 
 //SERVICIO DE MUDBLAZOR
 builder.Services.AddMudServices();
@@ -63,6 +68,7 @@ builder.Services.AddScoped<ServicioFacturaCab>();
 builder.Services.AddScoped<ServicioCasaCab>();
 builder.Services.AddScoped<ServicioCasaDet>();
 builder.Services.AddScoped<ServicioAhorro>();
+builder.Services.AddScoped<ServicioCharts>();
 
 //REPOSITORIOS
 builder.Services.AddScoped<RepositorioFacturaDet>();
@@ -70,6 +76,7 @@ builder.Services.AddScoped<RepositorioFacturaCab>();
 builder.Services.AddScoped<RepositorioCasaCab>();
 builder.Services.AddScoped<RepositorioCasaDet>();
 builder.Services.AddScoped<RepositorioAhorro>();
+builder.Services.AddScoped<RepositorioChart>();
 
 // 5. Autenticación y Cookies (Antes de los componentes)
 builder.Services.AddAuthentication("SupabaseAuth")

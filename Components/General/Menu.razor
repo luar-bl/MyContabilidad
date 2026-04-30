@@ -29,6 +29,10 @@
             <MudMenuItem Icon="@Icons.Material.Filled.Notes" IconColor="Color.Success" OnClick="@(() => NavegarAListadoFacturas())">
                 Facturas
             </MudMenuItem>
+
+            <MudMenuItem Icon="@Icons.Material.Filled.AreaChart" IconColor="Color.Success" OnClick="@(() => NavegarAGraficos())">
+                Gráficos
+            </MudMenuItem>
         </MudMenu>
     </MudHidden>
     <!-- TEXTO MENÚ IZQUIERDA-->
@@ -46,8 +50,12 @@
                         OnClick="@(() => NavegarAListadoCasas())">Casas</MudNavLink>
 
             <MudNavLink Icon="@Icons.Material.Filled.EventNote"
-                        IconColor="Color.Success"
+                        IconColor="Color.Warning"
                         OnClick="@(() => NavegarAListadoFacturas())"> Facturas</MudNavLink>
+
+            <MudNavLink Icon="@Icons.Material.Filled.BarChart"
+                        IconColor="Color.Success"
+                        OnClick="@(() => NavegarAGraficos())"> Gráficos</MudNavLink>
         </MudStack>
     </MudHidden>
 </MudAppBar>

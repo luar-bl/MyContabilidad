@@ -49,9 +49,11 @@ namespace ProyectoCasa.Components.Pages.Casa
         {
             try
             {
-                await _servicioCasaDet.AgregarDetalle(_det, _casa);
-                StateHasChanged();
+                _casa = await _servicioCasaDet.AgregarDetalle(_det, _casa);
+                _Id = _casa.Id;
+                await CargarDatos(true);
 
+                StateHasChanged();
                 #region -- Código Comentado --
                 //if (SupabaseClient == null)
                 //{
