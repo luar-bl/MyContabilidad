@@ -6,36 +6,54 @@
 <Menu/>
 
 <MudContainer Style="margin-top: 90px;">
-    <MudCard>
-        <MudCardContent>
-            <MudText Typo="Typo.h5">Ingresos 💸​</MudText>
-            <MudChart ChartType="MudBlazor.ChartType.Donut"
-                      Height="150px"
-                      ChartSeries="@LstIngresos.AsChartDataSet()"
-                      ChartLabels="@LstNombreCasa"
-                      LegendPosition="MudBlazor.Position.Bottom" />
-        </MudCardContent>
-    </MudCard>
-    <MudCard>
-        <MudCardContent>
+    <MudItem xs="12" md="6">
+         <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                <MudPaper>
+                    <MudText Typo="Typo.h5">Ingresos 💸​</MudText>
+                    <MudChart ChartType="MudBlazor.ChartType.Donut"
+                              Width="50%" Height="250px"
+                              ChartSeries="@LstIngresos.AsChartDataSet()"
+                              ChartLabels="@LstNombreCasa"
+                              LegendPosition="MudBlazor.Position.Bottom" />
+                </MudPaper>
+            <MudPaper>
+                <MudText Typo="Typo.h5">Ahorros 📈</MudText>
+                <MudChart ChartType="MudBlazor.ChartType.Donut"
+                          Width="50%" Height="250px"
+                          ChartSeries="@LstAhorros.AsChartDataSet()"
+                          ChartLabels="@LstNombreCasa"
+                          LegendPosition="MudBlazor.Position.Bottom" />
+            </MudPaper>
+
+        </MudStack>
+    </MudItem>
+    <MudItem xs="12" md="12">
+        <MudPaper>
             <MudText Typo="Typo.h5">Gastos 💳</MudText>
-            <MudChart ChartType="MudBlazor.ChartType.Donut"
-                      Height="150px"
+            <MudChart ChartType="MudBlazor.ChartType.Bar"
+                      Width="100%" Height="350px"
                       ChartSeries="@LstGastos.AsChartDataSet()"
                       ChartLabels="@LstTipoFactura"
                       LegendPosition="MudBlazor.Position.Bottom" />
-        </MudCardContent>
-    </MudCard>
-    <MudCard>
-        <MudCardContent>
+        </MudPaper>
+    </MudItem>
+   
+   @*  <MudPaper Class="pa-4">
+            <MudText Typo="Typo.h5">Gastos 💳</MudText>
+            <MudChart ChartType="MudBlazor.ChartType.Donut"
+                     Width="100%" Height="300px"
+                      ChartSeries="@LstGastos.AsChartDataSet()"
+                      ChartLabels="@LstTipoFactura"
+                      LegendPosition="MudBlazor.Position.Bottom" />
+    </MudPaper> *@
+    @* <MudPaper Class="pa-4">
             <MudText Typo="Typo.h5">Ahorros 📈</MudText>
             <MudChart ChartType="MudBlazor.ChartType.Donut"
-                      Height="150px"
+                     Width="100%" Height="300px"
                       ChartSeries="@LstAhorros.AsChartDataSet()"
                       ChartLabels="@LstNombreCasa"
                       LegendPosition="MudBlazor.Position.Bottom" />
-        </MudCardContent>
-    </MudCard>
+    </MudPaper> *@
    @*  <MudPaper Class="pa-2">
         <MudItem xs="12" md="12">
             <MudChart ChartType="MudBlazor.ChartType.Donut"

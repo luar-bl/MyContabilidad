@@ -35,23 +35,26 @@ namespace ProyectoCasa.Components.Pages.Charts
 
             LstAhorros = new decimal[lstObtenerAhorros.Count];
 
+            //INGRESOS
             for (int i = 0; i < lstObtenerIngresos.Count; i++)
             {
                 LstIngresos[i] = lstObtenerIngresos[i].Cantidad;
-                LstNombreCasa[i] = Convert.ToString(lstObtenerIngresos[i].NombreCasa);
+                LstNombreCasa[i] = $"{Convert.ToString(lstObtenerIngresos[i].NombreCasa)}: {lstObtenerIngresos[i].Cantidad}€";
             }
 
+            //GASTOS
             for (int i = 0; i < lstObtenerGastos.Count; i++)
             {
                 LstGastos[i] = lstObtenerGastos[i].Cantidad;
-                LstTipoFactura[i] = Enum.GetName(lstObtenerGastos[i].TipoFact);
+                LstTipoFactura[i] = $"{Enum.GetName(lstObtenerGastos[i].TipoFact)}: {lstObtenerGastos[i].Cantidad}€";
             }
 
+            //AHORROS
             if (!LstNombreCasa.Any())
             {
                 for (int i = 0; i < lstObtenerAhorros.Count; i++)
                 {
-                    LstGastos[i] = lstObtenerAhorros[i].Cantidad;
+                    LstAhorros[i] = lstObtenerAhorros[i].Cantidad;
                     LstNombreCasa[i] = lstObtenerAhorros[i].NombreCasa;
                 }
             }
